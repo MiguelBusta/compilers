@@ -24,13 +24,13 @@ symbol_table = dict()
 symbol_table["PI"] = pi
 symbol_table["E"] = 2.718281828459045
 
-def myPrint(v1,v2,v3,v4):  
+def myPrint(v1,v2,v3,v4):
     print("--->" ,v1,v2,v3,v4)
 
 def do_nothing():
     print("We are Nothing....")
 
-def sumAB(a,b):  
+def sumAB(a,b):
     return a + b
 
 symbol_table["myPrint"] = myPrint
@@ -115,7 +115,7 @@ def p_assignment_assign(p):
     parseGraph.add_edge(node["counter"] , node_var["counter"])
     parseGraph.add_edge(node["counter"] , p[3]["counter"])
 
-    
+
     p[0] = node
 
 def p_assignment_flow(p):
@@ -143,7 +143,7 @@ def p_flow(p):
             c["label"] = f"VAR_{p[1]}"
             c["value"] = p[1]
             break
-        
+
     p[0] = p[3][-1]
 
 def p_flow_functions(p):
@@ -352,53 +352,53 @@ def visit_node(tree, node_id, from_id):
 
     if current_node["type"] == "NUMBER":
         return current_node["value"]
-    
+
     if current_node["type"] == "STRING":
         return current_node["value"]
-    
-    
+
+
     if current_node["type"] == "PENDING_NODE":
         return res[0]
-    
+
     if current_node["type"] == "VARIABLE_ASSIGN":
         return current_node["value"]
-    
+
     if current_node["type"] == "VARIABLE":
         if current_node["value"] in symbol_table:
             return symbol_table[current_node["value"]]
         print("ERROR! Variable not found, returning 0 ")
         return 0
-    
-     
+
+
     if current_node["type"] == "FUNCTION_CALL" or current_node["type"] == "FLOW_FUNCTION_CALL":
         if current_node["value"] in symbol_table:
             if(len(res) > 0):
-                return symbol_table[current_node["value"]](*res)   
+                return symbol_table[current_node["value"]](*res)
             else:
                 return symbol_table[current_node["value"]]()
         else:
             fn = search_cv2( current_node["value"])
             if fn is not None:
                 return fn(*res)
-        
+
         print("ERROR! FUNCTION not found, returning 0 ")
         return 0
-    
+
     if current_node["type"] == "PLUS":
         return res[0] + res[1]
-    
+
     if current_node["type"] == "MINUS":
         return res[0] - res[1]
-    
+
     if current_node["type"] == "TIMES":
         return res[0] * res[1]
-    
+
     if current_node["type"] == "DIV":
         return res[0] / res[1]
-    
+
     if current_node["type"] == "POWER":
         return pow(res[0], res[1])
-    
+
     if current_node["type"] == "GROUP":
         return res[0]
 
@@ -417,7 +417,7 @@ while True:
     NODE_COUNTER = 0
     root = add_node({"type":"INITIAL" , "label":"INIT"})
     result = parser.parse(data)
-  
+
     parseGraph.add_edge(root["counter"] , result["counter"])
 
     labels = nx.get_node_attributes(parseGraph, "label")

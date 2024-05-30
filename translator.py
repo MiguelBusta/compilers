@@ -1,11 +1,19 @@
-import ply.lex as lex
+"""
+Import libraries ad modules
+"""
+
+import ply.lex as lex #lexical analyzer
 from math import pi
 from math import pow
-import ply.yacc as yacc
+import ply.yacc as yacc #syntactic analyzer
 import networkx as nx
-import matplotlib.pyplot as plt
-from networkx.drawing.nx_pydot import graphviz_layout
-from library import *
+import matplotlib.pyplot as plt #plot data
+from networkx.drawing.nx_pydot import graphviz_layout #plot graphs
+from library import * #customize library to import functions
+
+"""
+Global variables
+"""
 
 parseGraph = None
 NODE_COUNTER = 0

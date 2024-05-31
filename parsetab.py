@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'COMMA CONNECT DIV EQUAL EXP LPAREN MINUS NUMBER PLUS RPAREN STRING TIMES VARIABLE\n    assignment : VARIABLE EQUAL expression\n    \n    assignment : VARIABLE EQUAL flow\n    \n    flow : VARIABLE CONNECT flow_functions\n    \n    flow_functions : flow_function_call CONNECT flow_functions\n    \n    flow_functions : flow_function_call\n    \n    flow_function_call : VARIABLE LPAREN params RPAREN\n    \n    assignment : expression\n    \n    expression : term\n                | string\n    \n    string : STRING\n    \n    expression : expression PLUS term\n    \n    expression : expression MINUS term\n    \n    term : exponent\n    \n    term : term TIMES exponent\n    \n    term : term DIV exponent\n    \n    exponent : factor\n    \n    exponent : factor EXP factor\n    \n    factor : NUMBER\n    \n    factor : VARIABLE\n    \n    factor : LPAREN expression RPAREN\n    \n    factor : function_call\n    \n    function_call : VARIABLE LPAREN RPAREN\n    \n    function_call : VARIABLE LPAREN params RPAREN\n    \n    params : params COMMA expression\n            | expression\n    '
+_lr_signature = 'COMMA CONNECT DIV EQUAL EXP LBRACKET LPAREN MINUS NUMBER PLUS RBRACKET RPAREN STRING TIMES VARIABLE\n    assignment : VARIABLE EQUAL expression\n    \n    assignment : VARIABLE EQUAL flow\n    \n    flow : VARIABLE CONNECT flow_functions\n    \n    flow_functions : flow_function_call CONNECT flow_functions\n    \n    flow_functions : flow_function_call\n    \n    flow_function_call : VARIABLE LPAREN params RPAREN\n    \n    assignment : expression\n    \n    expression : term\n                | string\n                | list_access\n    \n    string : STRING\n    \n    expression : expression PLUS term\n    \n    expression : expression MINUS term\n    \n    term : exponent\n    \n    term : term TIMES exponent\n    \n    term : term DIV exponent\n    \n    exponent : factor\n    \n    exponent : factor EXP factor\n    \n    factor : NUMBER\n    \n    factor : VARIABLE\n    \n    factor : LPAREN expression RPAREN\n    \n    factor : function_call\n    \n    function_call : VARIABLE LPAREN RPAREN\n    \n    function_call : VARIABLE LPAREN params RPAREN\n    \n    params : params COMMA expression\n            | expression\n    \n    factor : LBRACKET elements RBRACKET\n    \n    elements : elements COMMA expression\n             | expression\n    \n    list_access : VARIABLE LBRACKET expression RBRACKET\n    '
     
-_lr_action_items = {'VARIABLE':([0,10,12,13,14,15,16,17,18,33,35,40,41,],[2,20,21,20,20,20,20,20,20,36,20,20,36,]),'STRING':([0,10,12,13,35,40,],[7,7,7,7,7,7,]),'NUMBER':([0,10,12,13,14,15,16,17,18,35,40,],[9,9,9,9,9,9,9,9,9,9,9,]),'LPAREN':([0,2,10,12,13,14,15,16,17,18,20,21,35,36,40,],[10,13,10,10,10,10,10,10,10,10,13,13,10,40,10,]),'$end':([1,2,3,4,5,6,7,8,9,11,20,21,22,23,24,27,28,29,30,31,32,34,37,38,43,44,],[0,-19,-7,-8,-9,-13,-10,-16,-18,-21,-19,-19,-1,-2,-22,-11,-12,-14,-15,-17,-20,-23,-3,-5,-4,-6,]),'EQUAL':([2,],[12,]),'EXP':([2,8,9,11,20,21,24,32,34,],[-19,18,-18,-21,-19,-19,-22,-20,-23,]),'TIMES':([2,4,6,8,9,11,20,21,24,27,28,29,30,31,32,34,],[-19,16,-13,-16,-18,-21,-19,-19,-22,16,16,-14,-15,-17,-20,-23,]),'DIV':([2,4,6,8,9,11,20,21,24,27,28,29,30,31,32,34,],[-19,17,-13,-16,-18,-21,-19,-19,-22,17,17,-14,-15,-17,-20,-23,]),'PLUS':([2,3,4,5,6,7,8,9,11,19,20,21,22,24,26,27,28,29,30,31,32,34,39,],[-19,14,-8,-9,-13,-10,-16,-18,-21,14,-19,-19,14,-22,14,-11,-12,-14,-15,-17,-20,-23,14,]),'MINUS':([2,3,4,5,6,7,8,9,11,19,20,21,22,24,26,27,28,29,30,31,32,34,39,],[-19,15,-8,-9,-13,-10,-16,-18,-21,15,-19,-19,15,-22,15,-11,-12,-14,-15,-17,-20,-23,15,]),'RPAREN':([4,5,6,7,8,9,11,13,19,20,24,25,26,27,28,29,30,31,32,34,39,42,],[-8,-9,-13,-10,-16,-18,-21,24,32,-19,-22,34,-25,-11,-12,-14,-15,-17,-20,-23,-24,44,]),'COMMA':([4,5,6,7,8,9,11,20,24,25,26,27,28,29,30,31,32,34,39,42,],[-8,-9,-13,-10,-16,-18,-21,-19,-22,35,-25,-11,-12,-14,-15,-17,-20,-23,-24,35,]),'CONNECT':([21,38,44,],[33,41,-6,]),}
+_lr_action_items = {'VARIABLE':([0,9,12,14,15,16,17,18,19,20,24,39,42,45,51,52,],[2,23,23,26,23,23,34,34,34,34,34,23,47,23,23,47,]),'STRING':([0,9,12,14,15,16,39,45,51,],[8,8,8,8,8,8,8,8,8,]),'NUMBER':([0,9,12,14,15,16,17,18,19,20,24,39,45,51,],[11,11,11,11,11,11,11,11,11,11,11,11,11,11,]),'LPAREN':([0,2,9,12,14,15,16,17,18,19,20,23,24,26,34,39,45,47,51,],[12,16,12,12,12,12,12,12,12,12,12,16,12,16,16,12,12,51,12,]),'LBRACKET':([0,2,9,12,14,15,16,17,18,19,20,23,24,26,39,45,51,],[9,15,9,9,9,9,9,9,9,9,9,15,9,15,9,9,9,]),'$end':([1,2,3,4,5,6,7,8,10,11,13,26,27,28,30,33,34,35,36,37,38,40,41,43,44,48,49,54,55,],[0,-20,-7,-8,-9,-10,-14,-11,-17,-19,-22,-20,-1,-2,-23,-12,-20,-13,-15,-16,-27,-18,-21,-30,-24,-3,-5,-4,-6,]),'EQUAL':([2,],[14,]),'EXP':([2,10,11,13,23,26,30,34,38,41,44,],[-20,24,-19,-22,-20,-20,-23,-20,-27,-21,-24,]),'TIMES':([2,4,7,10,11,13,23,26,30,33,34,35,36,37,38,40,41,44,],[-20,19,-14,-17,-19,-22,-20,-20,-23,19,-20,19,-15,-16,-27,-18,-21,-24,]),'DIV':([2,4,7,10,11,13,23,26,30,33,34,35,36,37,38,40,41,44,],[-20,20,-14,-17,-19,-22,-20,-20,-23,20,-20,20,-15,-16,-27,-18,-21,-24,]),'PLUS':([2,3,4,5,6,7,8,10,11,13,22,23,25,26,27,29,30,32,33,34,35,36,37,38,40,41,43,44,46,50,],[-20,17,-8,-9,-10,-14,-11,-17,-19,-22,17,-20,17,-20,17,17,-23,17,-12,-20,-13,-15,-16,-27,-18,-21,-30,-24,17,17,]),'MINUS':([2,3,4,5,6,7,8,10,11,13,22,23,25,26,27,29,30,32,33,34,35,36,37,38,40,41,43,44,46,50,],[-20,18,-8,-9,-10,-14,-11,-17,-19,-22,18,-20,18,-20,18,18,-23,18,-12,-20,-13,-15,-16,-27,-18,-21,-30,-24,18,18,]),'RBRACKET':([4,5,6,7,8,10,11,13,21,22,23,29,30,33,34,35,36,37,38,40,41,43,44,46,],[-8,-9,-10,-14,-11,-17,-19,-22,38,-29,-20,43,-23,-12,-20,-13,-15,-16,-27,-18,-21,-30,-24,-28,]),'COMMA':([4,5,6,7,8,10,11,13,21,22,23,30,31,32,33,34,35,36,37,38,40,41,43,44,46,50,53,],[-8,-9,-10,-14,-11,-17,-19,-22,39,-29,-20,-23,45,-26,-12,-20,-13,-15,-16,-27,-18,-21,-30,-24,-28,-25,45,]),'RPAREN':([4,5,6,7,8,10,11,13,16,23,25,30,31,32,33,34,35,36,37,38,40,41,43,44,50,53,],[-8,-9,-10,-14,-11,-17,-19,-22,30,-20,41,-23,44,-26,-12,-20,-13,-15,-16,-27,-18,-21,-30,-24,-25,55,]),'CONNECT':([26,49,55,],[42,52,-6,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'assignment':([0,],[1,]),'expression':([0,10,12,13,35,40,],[3,19,22,26,39,26,]),'term':([0,10,12,13,14,15,35,40,],[4,4,4,4,27,28,4,4,]),'string':([0,10,12,13,35,40,],[5,5,5,5,5,5,]),'exponent':([0,10,12,13,14,15,16,17,35,40,],[6,6,6,6,6,6,29,30,6,6,]),'factor':([0,10,12,13,14,15,16,17,18,35,40,],[8,8,8,8,8,8,8,8,31,8,8,]),'function_call':([0,10,12,13,14,15,16,17,18,35,40,],[11,11,11,11,11,11,11,11,11,11,11,]),'flow':([12,],[23,]),'params':([13,40,],[25,42,]),'flow_functions':([33,41,],[37,43,]),'flow_function_call':([33,41,],[38,38,]),}
+_lr_goto_items = {'assignment':([0,],[1,]),'expression':([0,9,12,14,15,16,39,45,51,],[3,22,25,27,29,32,46,50,32,]),'term':([0,9,12,14,15,16,17,18,39,45,51,],[4,4,4,4,4,4,33,35,4,4,4,]),'string':([0,9,12,14,15,16,39,45,51,],[5,5,5,5,5,5,5,5,5,]),'list_access':([0,9,12,14,15,16,39,45,51,],[6,6,6,6,6,6,6,6,6,]),'exponent':([0,9,12,14,15,16,17,18,19,20,39,45,51,],[7,7,7,7,7,7,7,7,36,37,7,7,7,]),'factor':([0,9,12,14,15,16,17,18,19,20,24,39,45,51,],[10,10,10,10,10,10,10,10,10,10,40,10,10,10,]),'function_call':([0,9,12,14,15,16,17,18,19,20,24,39,45,51,],[13,13,13,13,13,13,13,13,13,13,13,13,13,13,]),'elements':([9,],[21,]),'flow':([14,],[28,]),'params':([16,51,],[31,53,]),'flow_functions':([42,52,],[48,54,]),'flow_function_call':([42,52,],[49,49,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,29 +27,34 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> assignment","S'",1,None,None,None),
-  ('assignment -> VARIABLE EQUAL expression','assignment',3,'p_assignment_assign','translator.py',91),
-  ('assignment -> VARIABLE EQUAL flow','assignment',3,'p_assignment_flow','translator.py',101),
-  ('flow -> VARIABLE CONNECT flow_functions','flow',3,'p_flow','translator.py',111),
-  ('flow_functions -> flow_function_call CONNECT flow_functions','flow_functions',3,'p_flow_functions','translator.py',125),
-  ('flow_functions -> flow_function_call','flow_functions',1,'p_flow_functions_alone','translator.py',137),
-  ('flow_function_call -> VARIABLE LPAREN params RPAREN','flow_function_call',4,'p_flow_function_call','translator.py',143),
-  ('assignment -> expression','assignment',1,'p_assignment_expression','translator.py',154),
-  ('expression -> term','expression',1,'p_expression_term','translator.py',160),
-  ('expression -> string','expression',1,'p_expression_term','translator.py',161),
-  ('string -> STRING','string',1,'p_string_def','translator.py',167),
-  ('expression -> expression PLUS term','expression',3,'p_expression_plus','translator.py',173),
-  ('expression -> expression MINUS term','expression',3,'p_expression_minus','translator.py',182),
-  ('term -> exponent','term',1,'p_term_exponent','translator.py',191),
-  ('term -> term TIMES exponent','term',3,'p_term_times','translator.py',197),
-  ('term -> term DIV exponent','term',3,'p_term_divides','translator.py',206),
-  ('exponent -> factor','exponent',1,'p_exponent_factor','translator.py',215),
-  ('exponent -> factor EXP factor','exponent',3,'p_exponent_exp','translator.py',221),
-  ('factor -> NUMBER','factor',1,'p_factor_num','translator.py',230),
-  ('factor -> VARIABLE','factor',1,'p_factor_variable','translator.py',237),
-  ('factor -> LPAREN expression RPAREN','factor',3,'p_factor_expr','translator.py',243),
-  ('factor -> function_call','factor',1,'p_factor_function_call','translator.py',251),
-  ('function_call -> VARIABLE LPAREN RPAREN','function_call',3,'p_function_call_no_params','translator.py',257),
-  ('function_call -> VARIABLE LPAREN params RPAREN','function_call',4,'p_function_call_params','translator.py',263),
-  ('params -> params COMMA expression','params',3,'p_params','translator.py',272),
-  ('params -> expression','params',1,'p_params','translator.py',273),
+  ('assignment -> VARIABLE EQUAL expression','assignment',3,'p_assignment_assign','trs.py',95),
+  ('assignment -> VARIABLE EQUAL flow','assignment',3,'p_assignment_flow','trs.py',105),
+  ('flow -> VARIABLE CONNECT flow_functions','flow',3,'p_flow','trs.py',115),
+  ('flow_functions -> flow_function_call CONNECT flow_functions','flow_functions',3,'p_flow_functions','trs.py',129),
+  ('flow_functions -> flow_function_call','flow_functions',1,'p_flow_functions_alone','trs.py',141),
+  ('flow_function_call -> VARIABLE LPAREN params RPAREN','flow_function_call',4,'p_flow_function_call','trs.py',147),
+  ('assignment -> expression','assignment',1,'p_assignment_expression','trs.py',158),
+  ('expression -> term','expression',1,'p_expression_term','trs.py',164),
+  ('expression -> string','expression',1,'p_expression_term','trs.py',165),
+  ('expression -> list_access','expression',1,'p_expression_term','trs.py',166),
+  ('string -> STRING','string',1,'p_string_def','trs.py',172),
+  ('expression -> expression PLUS term','expression',3,'p_expression_plus','trs.py',178),
+  ('expression -> expression MINUS term','expression',3,'p_expression_minus','trs.py',187),
+  ('term -> exponent','term',1,'p_term_exponent','trs.py',196),
+  ('term -> term TIMES exponent','term',3,'p_term_times','trs.py',202),
+  ('term -> term DIV exponent','term',3,'p_term_divides','trs.py',211),
+  ('exponent -> factor','exponent',1,'p_exponent_factor','trs.py',220),
+  ('exponent -> factor EXP factor','exponent',3,'p_exponent_exp','trs.py',226),
+  ('factor -> NUMBER','factor',1,'p_factor_num','trs.py',235),
+  ('factor -> VARIABLE','factor',1,'p_factor_variable','trs.py',242),
+  ('factor -> LPAREN expression RPAREN','factor',3,'p_factor_expr','trs.py',248),
+  ('factor -> function_call','factor',1,'p_factor_function_call','trs.py',256),
+  ('function_call -> VARIABLE LPAREN RPAREN','function_call',3,'p_function_call_no_params','trs.py',262),
+  ('function_call -> VARIABLE LPAREN params RPAREN','function_call',4,'p_function_call_params','trs.py',268),
+  ('params -> params COMMA expression','params',3,'p_params','trs.py',277),
+  ('params -> expression','params',1,'p_params','trs.py',278),
+  ('factor -> LBRACKET elements RBRACKET','factor',3,'p_list_def','trs.py',287),
+  ('elements -> elements COMMA expression','elements',3,'p_elements','trs.py',296),
+  ('elements -> expression','elements',1,'p_elements','trs.py',297),
+  ('list_access -> VARIABLE LBRACKET expression RBRACKET','list_access',4,'p_list_access','trs.py',306),
 ]

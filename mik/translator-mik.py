@@ -142,7 +142,9 @@ def p_factor_num(p):
     """
     factor : NUMBER
     """
-    p[0] = p[1]
+    n = add_node( {'type':'NUMBER', 'label':f'NUM_{p[1]}', 'value':p[1]} )
+
+    p[0] = n
 
 def p_factor_variable(p):
     """

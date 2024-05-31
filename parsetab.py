@@ -6,7 +6,7 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'COMMA CONNECT DIV EQUAL EXP LPAREN MINUS NUMBER PLUS RPAREN STRING TIMES VARIABLE\n    assignment : VARIABLE EQUAL expression\n    \n    assignment : VARIABLE EQUAL flow\n    \n    flow : VARIABLE CONNECT flow_functions\n    \n    flow_functions : flow_function_call CONNECT flow_functions\n    \n    flow_functions : flow_function_call\n    \n    flow_function_call : VARIABLE LPAREN params RPAREN\n    \n    assignment : expression\n    \n    expression : term\n                | string\n    \n    string : STRING\n    \n    expression : expression PLUS term\n    \n    expression : expression MINUS term\n    \n    term : exponent\n    \n    term : term TIMES exponent\n    \n    term : term DIV exponent\n    \n    exponent : factor\n    \n    exponent : factor EXP factor\n    \n    factor : NUMBER\n    \n    factor : VARIABLE\n    \n    factor : LPAREN expression RPAREN\n    \n    factor : function_call\n    \n    function_call : VARIABLE LPAREN RPAREN\n    \n    function_call : VARIABLE LPAREN params RPAREN\n    \n    params : params COMMA expression\n            | expression\n    '
+_lr_signature = 'COMMA CONNECT DIV EQUAL EXP LPAREN MINUS NONE NUMBER PLUS RPAREN STRING TIMES VARIABLE\n    assignment : VARIABLE EQUAL expression\n    \n    assignment : VARIABLE EQUAL flow\n    \n    flow : VARIABLE CONNECT flow_functions\n    \n    flow_functions : flow_function_call CONNECT flow_functions\n    \n    flow_functions : flow_function_call\n    \n    flow_function_call : VARIABLE LPAREN params RPAREN\n    \n    assignment : expression\n    \n    expression : term\n                | string\n    \n    string : STRING\n    \n    expression : expression PLUS term\n    \n    expression : expression MINUS term\n    \n    term : exponent\n    \n    term : term TIMES exponent\n    \n    term : term DIV exponent\n    \n    exponent : factor\n    \n    exponent : factor EXP factor\n    \n    factor : NUMBER\n    \n    factor : VARIABLE\n    \n    factor : LPAREN expression RPAREN\n    \n    factor : function_call\n    \n    function_call : VARIABLE LPAREN RPAREN\n    \n    function_call : VARIABLE LPAREN params RPAREN\n    \n    params : params COMMA expression\n            | expression\n    '
     
 _lr_action_items = {'VARIABLE':([0,10,12,13,14,15,16,17,18,33,35,40,41,],[2,20,21,20,20,20,20,20,20,36,20,20,36,]),'STRING':([0,10,12,13,35,40,],[7,7,7,7,7,7,]),'NUMBER':([0,10,12,13,14,15,16,17,18,35,40,],[9,9,9,9,9,9,9,9,9,9,9,]),'LPAREN':([0,2,10,12,13,14,15,16,17,18,20,21,35,36,40,],[10,13,10,10,10,10,10,10,10,10,13,13,10,40,10,]),'$end':([1,2,3,4,5,6,7,8,9,11,20,21,22,23,24,27,28,29,30,31,32,34,37,38,43,44,],[0,-19,-7,-8,-9,-13,-10,-16,-18,-21,-19,-19,-1,-2,-22,-11,-12,-14,-15,-17,-20,-23,-3,-5,-4,-6,]),'EQUAL':([2,],[12,]),'EXP':([2,8,9,11,20,21,24,32,34,],[-19,18,-18,-21,-19,-19,-22,-20,-23,]),'TIMES':([2,4,6,8,9,11,20,21,24,27,28,29,30,31,32,34,],[-19,16,-13,-16,-18,-21,-19,-19,-22,16,16,-14,-15,-17,-20,-23,]),'DIV':([2,4,6,8,9,11,20,21,24,27,28,29,30,31,32,34,],[-19,17,-13,-16,-18,-21,-19,-19,-22,17,17,-14,-15,-17,-20,-23,]),'PLUS':([2,3,4,5,6,7,8,9,11,19,20,21,22,24,26,27,28,29,30,31,32,34,39,],[-19,14,-8,-9,-13,-10,-16,-18,-21,14,-19,-19,14,-22,14,-11,-12,-14,-15,-17,-20,-23,14,]),'MINUS':([2,3,4,5,6,7,8,9,11,19,20,21,22,24,26,27,28,29,30,31,32,34,39,],[-19,15,-8,-9,-13,-10,-16,-18,-21,15,-19,-19,15,-22,15,-11,-12,-14,-15,-17,-20,-23,15,]),'RPAREN':([4,5,6,7,8,9,11,13,19,20,24,25,26,27,28,29,30,31,32,34,39,42,],[-8,-9,-13,-10,-16,-18,-21,24,32,-19,-22,34,-25,-11,-12,-14,-15,-17,-20,-23,-24,44,]),'COMMA':([4,5,6,7,8,9,11,20,24,25,26,27,28,29,30,31,32,34,39,42,],[-8,-9,-13,-10,-16,-18,-21,-19,-22,35,-25,-11,-12,-14,-15,-17,-20,-23,-24,35,]),'CONNECT':([21,38,44,],[33,41,-6,]),}
 
@@ -27,29 +27,29 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> assignment","S'",1,None,None,None),
-  ('assignment -> VARIABLE EQUAL expression','assignment',3,'p_assignment_assign','translator.py',111),
-  ('assignment -> VARIABLE EQUAL flow','assignment',3,'p_assignment_flow','translator.py',123),
-  ('flow -> VARIABLE CONNECT flow_functions','flow',3,'p_flow','translator.py',134),
-  ('flow_functions -> flow_function_call CONNECT flow_functions','flow_functions',3,'p_flow_functions','translator.py',151),
-  ('flow_functions -> flow_function_call','flow_functions',1,'p_flow_functions_alone','translator.py',166),
-  ('flow_function_call -> VARIABLE LPAREN params RPAREN','flow_function_call',4,'p_flow_function_call','translator.py',172),
-  ('assignment -> expression','assignment',1,'p_assignment_expression','translator.py',185),
-  ('expression -> term','expression',1,'p_expression_term','translator.py',197),
-  ('expression -> string','expression',1,'p_expression_term','translator.py',198),
-  ('string -> STRING','string',1,'p_string_def','translator.py',204),
-  ('expression -> expression PLUS term','expression',3,'p_expression_plus','translator.py',210),
-  ('expression -> expression MINUS term','expression',3,'p_expression_minus','translator.py',219),
-  ('term -> exponent','term',1,'p_term_exponent','translator.py',228),
-  ('term -> term TIMES exponent','term',3,'p_term_times','translator.py',234),
-  ('term -> term DIV exponent','term',3,'p_term_divides','translator.py',243),
-  ('exponent -> factor','exponent',1,'p_exponent_factor','translator.py',252),
-  ('exponent -> factor EXP factor','exponent',3,'p_exponent_exp','translator.py',258),
-  ('factor -> NUMBER','factor',1,'p_factor_num','translator.py',268),
-  ('factor -> VARIABLE','factor',1,'p_factor_variable','translator.py',276),
-  ('factor -> LPAREN expression RPAREN','factor',3,'p_factor_expr','translator.py',282),
-  ('factor -> function_call','factor',1,'p_factor_function_call','translator.py',291),
-  ('function_call -> VARIABLE LPAREN RPAREN','function_call',3,'p_function_call_no_params','translator.py',298),
-  ('function_call -> VARIABLE LPAREN params RPAREN','function_call',4,'p_function_call_params','translator.py',304),
-  ('params -> params COMMA expression','params',3,'p_params','translator.py',314),
-  ('params -> expression','params',1,'p_params','translator.py',315),
+  ('assignment -> VARIABLE EQUAL expression','assignment',3,'p_assignment_assign','translator2.py',137),
+  ('assignment -> VARIABLE EQUAL flow','assignment',3,'p_assignment_flow','translator2.py',148),
+  ('flow -> VARIABLE CONNECT flow_functions','flow',3,'p_flow','translator2.py',159),
+  ('flow_functions -> flow_function_call CONNECT flow_functions','flow_functions',3,'p_flow_functions','translator2.py',176),
+  ('flow_functions -> flow_function_call','flow_functions',1,'p_flow_functions_alone','translator2.py',191),
+  ('flow_function_call -> VARIABLE LPAREN params RPAREN','flow_function_call',4,'p_flow_function_call','translator2.py',197),
+  ('assignment -> expression','assignment',1,'p_assignment_expression','translator2.py',210),
+  ('expression -> term','expression',1,'p_expression_term','translator2.py',222),
+  ('expression -> string','expression',1,'p_expression_term','translator2.py',223),
+  ('string -> STRING','string',1,'p_string_def','translator2.py',229),
+  ('expression -> expression PLUS term','expression',3,'p_expression_plus','translator2.py',235),
+  ('expression -> expression MINUS term','expression',3,'p_expression_minus','translator2.py',244),
+  ('term -> exponent','term',1,'p_term_exponent','translator2.py',253),
+  ('term -> term TIMES exponent','term',3,'p_term_times','translator2.py',259),
+  ('term -> term DIV exponent','term',3,'p_term_divides','translator2.py',268),
+  ('exponent -> factor','exponent',1,'p_exponent_factor','translator2.py',277),
+  ('exponent -> factor EXP factor','exponent',3,'p_exponent_exp','translator2.py',283),
+  ('factor -> NUMBER','factor',1,'p_factor_num','translator2.py',293),
+  ('factor -> VARIABLE','factor',1,'p_factor_variable','translator2.py',301),
+  ('factor -> LPAREN expression RPAREN','factor',3,'p_factor_expr','translator2.py',307),
+  ('factor -> function_call','factor',1,'p_factor_function_call','translator2.py',316),
+  ('function_call -> VARIABLE LPAREN RPAREN','function_call',3,'p_function_call_no_params','translator2.py',323),
+  ('function_call -> VARIABLE LPAREN params RPAREN','function_call',4,'p_function_call_params','translator2.py',329),
+  ('params -> params COMMA expression','params',3,'p_params','translator2.py',339),
+  ('params -> expression','params',1,'p_params','translator2.py',340),
 ]

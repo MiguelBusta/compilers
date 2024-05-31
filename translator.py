@@ -3,7 +3,9 @@ Import libraries ad modules
 """
 
 import ply.lex as lex #lexical analyzer
-from math import pi
+from math import pi 
+from math import cos
+from math import sin
 from math import pow
 import ply.yacc as yacc #syntactic analyzer
 import networkx as nx
@@ -31,6 +33,8 @@ symbol_table = dict()
 
 symbol_table["PI"] = pi
 symbol_table["E"] = 2.718281828459045
+symbol_table["sin"] = sin
+symbol_table["cos"] = cos
 
 def myPrint(v1,v2,v3,v4):
     print("--->" ,v1,v2,v3,v4)

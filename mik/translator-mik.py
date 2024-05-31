@@ -1,11 +1,14 @@
 import ply.lex as lex
 import ply.yacc as yacc
+import matplotlib.pyplot as plt
+import networkx as nx
 
-from math import pi 
+from math import pi
 from math import pow
-from networkx import nx
 from networkx.drawing.nx_pydot import graphviz_layout
-symbol_table = dict()
+
+parseGraph = None
+NODE_COUNTER = 0
 
 def add_node(attr):
     global parseGraph
@@ -13,7 +16,9 @@ def add_node(attr):
 
     attr["counter"] = NODE_COUNTER
     parseGraph.add_node(NODE_COUNTER, **attr)
-    NODE_CONTER += 1
+    NODE_COUNTER += 1
+
+symbol_table = dict()
 
 symbol_table["PI"] = pi
 symbol_table["E"] = 2.718281828459045
@@ -73,11 +78,11 @@ lexer = lex.lex()
 
 def p_assignment_assign(p):
     """
-    assignment : VARIABLE EQUAL expression 
+    assignment : VARIABLE EQUAL expression
     """
     symbol_table[p[1]] = p[3]
     p[0] = p[3]
-    
+
 
 def p_assignment_expression(p):
     """
@@ -166,8 +171,15 @@ while True:
         print(symbol_table)
         continue
 
-    graph = nx.Graph()
-    result = parser.parse(data)
-    print("Result ", result)
+    parseGraph = nx.Graph()
+    NODE_COUNTER = 0
+    root = add_node({"type": "INITIAL", "label":"INIT"})
 
+    result = parser.parse(data)
+
+    labels = nx.get_node_attributes(parseGraph, "label")
+    pos = graphviz_layout(parseGraph, prog="dot")
+    nx.draw(parseGraph, pos, labels=labels, with_labels=True)
+    plt.show()
+    print("Result ", result)
 print("\nended")

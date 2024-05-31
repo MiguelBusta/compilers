@@ -1,0 +1,5 @@
+The result of this operation '2+2' is '4'
+The result of this operation 'x=3' is '3'
+The result of this operation 'y=2' is '2'
+The result of this operation 'y=x*y' is '6'
+The result of this operation 'sumAB(x,y)' is '9'

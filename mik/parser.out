@@ -1,0 +1,403 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    FUNCTION
+
+Grammar
+
+Rule 0     S' -> assignment
+Rule 1     assignment -> VARIABLE EQUAL expression
+Rule 2     assignment -> expression
+Rule 3     expression -> term
+Rule 4     expression -> expression PLUS term
+Rule 5     expression -> expression MINUS term
+Rule 6     term -> exponent
+Rule 7     term -> term TIMES exponent
+Rule 8     term -> term DIV exponent
+Rule 9     exponent -> factor
+Rule 10    exponent -> factor EXP factor
+Rule 11    factor -> NUMBER
+Rule 12    factor -> VARIABLE
+Rule 13    factor -> LPAREN expression RPAREN
+
+Terminals, with rules where they appear
+
+DIV                  : 8
+EQUAL                : 1
+EXP                  : 10
+FUNCTION             : 
+LPAREN               : 13
+MINUS                : 5
+NUMBER               : 11
+PLUS                 : 4
+RPAREN               : 13
+TIMES                : 7
+VARIABLE             : 1 12
+error                : 
+
+Nonterminals, with rules where they appear
+
+assignment           : 0
+exponent             : 6 7 8
+expression           : 1 2 4 5 13
+factor               : 9 10 10
+term                 : 3 4 5 7 8
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . assignment
+    (1) assignment -> . VARIABLE EQUAL expression
+    (2) assignment -> . expression
+    (3) expression -> . term
+    (4) expression -> . expression PLUS term
+    (5) expression -> . expression MINUS term
+    (6) term -> . exponent
+    (7) term -> . term TIMES exponent
+    (8) term -> . term DIV exponent
+    (9) exponent -> . factor
+    (10) exponent -> . factor EXP factor
+    (11) factor -> . NUMBER
+    (12) factor -> . VARIABLE
+    (13) factor -> . LPAREN expression RPAREN
+
+    VARIABLE        shift and go to state 2
+    NUMBER          shift and go to state 7
+    LPAREN          shift and go to state 8
+
+    assignment                     shift and go to state 1
+    expression                     shift and go to state 3
+    term                           shift and go to state 4
+    exponent                       shift and go to state 5
+    factor                         shift and go to state 6
+
+state 1
+
+    (0) S' -> assignment .
+
+
+
+state 2
+
+    (1) assignment -> VARIABLE . EQUAL expression
+    (12) factor -> VARIABLE .
+
+    EQUAL           shift and go to state 9
+    EXP             reduce using rule 12 (factor -> VARIABLE .)
+    TIMES           reduce using rule 12 (factor -> VARIABLE .)
+    DIV             reduce using rule 12 (factor -> VARIABLE .)
+    PLUS            reduce using rule 12 (factor -> VARIABLE .)
+    MINUS           reduce using rule 12 (factor -> VARIABLE .)
+    $end            reduce using rule 12 (factor -> VARIABLE .)
+
+
+state 3
+
+    (2) assignment -> expression .
+    (4) expression -> expression . PLUS term
+    (5) expression -> expression . MINUS term
+
+    $end            reduce using rule 2 (assignment -> expression .)
+    PLUS            shift and go to state 10
+    MINUS           shift and go to state 11
+
+
+state 4
+
+    (3) expression -> term .
+    (7) term -> term . TIMES exponent
+    (8) term -> term . DIV exponent
+
+    PLUS            reduce using rule 3 (expression -> term .)
+    MINUS           reduce using rule 3 (expression -> term .)
+    $end            reduce using rule 3 (expression -> term .)
+    RPAREN          reduce using rule 3 (expression -> term .)
+    TIMES           shift and go to state 12
+    DIV             shift and go to state 13
+
+
+state 5
+
+    (6) term -> exponent .
+
+    TIMES           reduce using rule 6 (term -> exponent .)
+    DIV             reduce using rule 6 (term -> exponent .)
+    PLUS            reduce using rule 6 (term -> exponent .)
+    MINUS           reduce using rule 6 (term -> exponent .)
+    $end            reduce using rule 6 (term -> exponent .)
+    RPAREN          reduce using rule 6 (term -> exponent .)
+
+
+state 6
+
+    (9) exponent -> factor .
+    (10) exponent -> factor . EXP factor
+
+    TIMES           reduce using rule 9 (exponent -> factor .)
+    DIV             reduce using rule 9 (exponent -> factor .)
+    PLUS            reduce using rule 9 (exponent -> factor .)
+    MINUS           reduce using rule 9 (exponent -> factor .)
+    $end            reduce using rule 9 (exponent -> factor .)
+    RPAREN          reduce using rule 9 (exponent -> factor .)
+    EXP             shift and go to state 14
+
+
+state 7
+
+    (11) factor -> NUMBER .
+
+    EXP             reduce using rule 11 (factor -> NUMBER .)
+    TIMES           reduce using rule 11 (factor -> NUMBER .)
+    DIV             reduce using rule 11 (factor -> NUMBER .)
+    PLUS            reduce using rule 11 (factor -> NUMBER .)
+    MINUS           reduce using rule 11 (factor -> NUMBER .)
+    $end            reduce using rule 11 (factor -> NUMBER .)
+    RPAREN          reduce using rule 11 (factor -> NUMBER .)
+
+
+state 8
+
+    (13) factor -> LPAREN . expression RPAREN
+    (3) expression -> . term
+    (4) expression -> . expression PLUS term
+    (5) expression -> . expression MINUS term
+    (6) term -> . exponent
+    (7) term -> . term TIMES exponent
+    (8) term -> . term DIV exponent
+    (9) exponent -> . factor
+    (10) exponent -> . factor EXP factor
+    (11) factor -> . NUMBER
+    (12) factor -> . VARIABLE
+    (13) factor -> . LPAREN expression RPAREN
+
+    NUMBER          shift and go to state 7
+    VARIABLE        shift and go to state 16
+    LPAREN          shift and go to state 8
+
+    expression                     shift and go to state 15
+    term                           shift and go to state 4
+    exponent                       shift and go to state 5
+    factor                         shift and go to state 6
+
+state 9
+
+    (1) assignment -> VARIABLE EQUAL . expression
+    (3) expression -> . term
+    (4) expression -> . expression PLUS term
+    (5) expression -> . expression MINUS term
+    (6) term -> . exponent
+    (7) term -> . term TIMES exponent
+    (8) term -> . term DIV exponent
+    (9) exponent -> . factor
+    (10) exponent -> . factor EXP factor
+    (11) factor -> . NUMBER
+    (12) factor -> . VARIABLE
+    (13) factor -> . LPAREN expression RPAREN
+
+    NUMBER          shift and go to state 7
+    VARIABLE        shift and go to state 16
+    LPAREN          shift and go to state 8
+
+    expression                     shift and go to state 17
+    term                           shift and go to state 4
+    exponent                       shift and go to state 5
+    factor                         shift and go to state 6
+
+state 10
+
+    (4) expression -> expression PLUS . term
+    (6) term -> . exponent
+    (7) term -> . term TIMES exponent
+    (8) term -> . term DIV exponent
+    (9) exponent -> . factor
+    (10) exponent -> . factor EXP factor
+    (11) factor -> . NUMBER
+    (12) factor -> . VARIABLE
+    (13) factor -> . LPAREN expression RPAREN
+
+    NUMBER          shift and go to state 7
+    VARIABLE        shift and go to state 16
+    LPAREN          shift and go to state 8
+
+    term                           shift and go to state 18
+    exponent                       shift and go to state 5
+    factor                         shift and go to state 6
+
+state 11
+
+    (5) expression -> expression MINUS . term
+    (6) term -> . exponent
+    (7) term -> . term TIMES exponent
+    (8) term -> . term DIV exponent
+    (9) exponent -> . factor
+    (10) exponent -> . factor EXP factor
+    (11) factor -> . NUMBER
+    (12) factor -> . VARIABLE
+    (13) factor -> . LPAREN expression RPAREN
+
+    NUMBER          shift and go to state 7
+    VARIABLE        shift and go to state 16
+    LPAREN          shift and go to state 8
+
+    term                           shift and go to state 19
+    exponent                       shift and go to state 5
+    factor                         shift and go to state 6
+
+state 12
+
+    (7) term -> term TIMES . exponent
+    (9) exponent -> . factor
+    (10) exponent -> . factor EXP factor
+    (11) factor -> . NUMBER
+    (12) factor -> . VARIABLE
+    (13) factor -> . LPAREN expression RPAREN
+
+    NUMBER          shift and go to state 7
+    VARIABLE        shift and go to state 16
+    LPAREN          shift and go to state 8
+
+    exponent                       shift and go to state 20
+    factor                         shift and go to state 6
+
+state 13
+
+    (8) term -> term DIV . exponent
+    (9) exponent -> . factor
+    (10) exponent -> . factor EXP factor
+    (11) factor -> . NUMBER
+    (12) factor -> . VARIABLE
+    (13) factor -> . LPAREN expression RPAREN
+
+    NUMBER          shift and go to state 7
+    VARIABLE        shift and go to state 16
+    LPAREN          shift and go to state 8
+
+    exponent                       shift and go to state 21
+    factor                         shift and go to state 6
+
+state 14
+
+    (10) exponent -> factor EXP . factor
+    (11) factor -> . NUMBER
+    (12) factor -> . VARIABLE
+    (13) factor -> . LPAREN expression RPAREN
+
+    NUMBER          shift and go to state 7
+    VARIABLE        shift and go to state 16
+    LPAREN          shift and go to state 8
+
+    factor                         shift and go to state 22
+
+state 15
+
+    (13) factor -> LPAREN expression . RPAREN
+    (4) expression -> expression . PLUS term
+    (5) expression -> expression . MINUS term
+
+    RPAREN          shift and go to state 23
+    PLUS            shift and go to state 10
+    MINUS           shift and go to state 11
+
+
+state 16
+
+    (12) factor -> VARIABLE .
+
+    EXP             reduce using rule 12 (factor -> VARIABLE .)
+    TIMES           reduce using rule 12 (factor -> VARIABLE .)
+    DIV             reduce using rule 12 (factor -> VARIABLE .)
+    RPAREN          reduce using rule 12 (factor -> VARIABLE .)
+    PLUS            reduce using rule 12 (factor -> VARIABLE .)
+    MINUS           reduce using rule 12 (factor -> VARIABLE .)
+    $end            reduce using rule 12 (factor -> VARIABLE .)
+
+
+state 17
+
+    (1) assignment -> VARIABLE EQUAL expression .
+    (4) expression -> expression . PLUS term
+    (5) expression -> expression . MINUS term
+
+    $end            reduce using rule 1 (assignment -> VARIABLE EQUAL expression .)
+    PLUS            shift and go to state 10
+    MINUS           shift and go to state 11
+
+
+state 18
+
+    (4) expression -> expression PLUS term .
+    (7) term -> term . TIMES exponent
+    (8) term -> term . DIV exponent
+
+    PLUS            reduce using rule 4 (expression -> expression PLUS term .)
+    MINUS           reduce using rule 4 (expression -> expression PLUS term .)
+    $end            reduce using rule 4 (expression -> expression PLUS term .)
+    RPAREN          reduce using rule 4 (expression -> expression PLUS term .)
+    TIMES           shift and go to state 12
+    DIV             shift and go to state 13
+
+
+state 19
+
+    (5) expression -> expression MINUS term .
+    (7) term -> term . TIMES exponent
+    (8) term -> term . DIV exponent
+
+    PLUS            reduce using rule 5 (expression -> expression MINUS term .)
+    MINUS           reduce using rule 5 (expression -> expression MINUS term .)
+    $end            reduce using rule 5 (expression -> expression MINUS term .)
+    RPAREN          reduce using rule 5 (expression -> expression MINUS term .)
+    TIMES           shift and go to state 12
+    DIV             shift and go to state 13
+
+
+state 20
+
+    (7) term -> term TIMES exponent .
+
+    TIMES           reduce using rule 7 (term -> term TIMES exponent .)
+    DIV             reduce using rule 7 (term -> term TIMES exponent .)
+    PLUS            reduce using rule 7 (term -> term TIMES exponent .)
+    MINUS           reduce using rule 7 (term -> term TIMES exponent .)
+    $end            reduce using rule 7 (term -> term TIMES exponent .)
+    RPAREN          reduce using rule 7 (term -> term TIMES exponent .)
+
+
+state 21
+
+    (8) term -> term DIV exponent .
+
+    TIMES           reduce using rule 8 (term -> term DIV exponent .)
+    DIV             reduce using rule 8 (term -> term DIV exponent .)
+    PLUS            reduce using rule 8 (term -> term DIV exponent .)
+    MINUS           reduce using rule 8 (term -> term DIV exponent .)
+    $end            reduce using rule 8 (term -> term DIV exponent .)
+    RPAREN          reduce using rule 8 (term -> term DIV exponent .)
+
+
+state 22
+
+    (10) exponent -> factor EXP factor .
+
+    TIMES           reduce using rule 10 (exponent -> factor EXP factor .)
+    DIV             reduce using rule 10 (exponent -> factor EXP factor .)
+    PLUS            reduce using rule 10 (exponent -> factor EXP factor .)
+    MINUS           reduce using rule 10 (exponent -> factor EXP factor .)
+    $end            reduce using rule 10 (exponent -> factor EXP factor .)
+    RPAREN          reduce using rule 10 (exponent -> factor EXP factor .)
+
+
+state 23
+
+    (13) factor -> LPAREN expression RPAREN .
+
+    EXP             reduce using rule 13 (factor -> LPAREN expression RPAREN .)
+    TIMES           reduce using rule 13 (factor -> LPAREN expression RPAREN .)
+    DIV             reduce using rule 13 (factor -> LPAREN expression RPAREN .)
+    PLUS            reduce using rule 13 (factor -> LPAREN expression RPAREN .)
+    MINUS           reduce using rule 13 (factor -> LPAREN expression RPAREN .)
+    $end            reduce using rule 13 (factor -> LPAREN expression RPAREN .)
+    RPAREN          reduce using rule 13 (factor -> LPAREN expression RPAREN .)
+

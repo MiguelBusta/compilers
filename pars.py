@@ -3,6 +3,8 @@ from math import pi, pow
 import ply.yacc as yacc
 import networkx as nx
 import matplotlib.pyplot as plt
+import cv2
+import numpy as np
 from networkx.drawing.nx_pydot import graphviz_layout
 from library import *
 
@@ -32,16 +34,39 @@ def do_nothing():
 def sumAB(a, b):
     return a + b
 
+def load_image(filepath):
+    image = cv2.imread(filepath)
+    if image is None:
+        raise ValueError(f"Image at {filepath} could not be loaded.")
+    return image
+
+def show_image(image):
+    cv2.imshow('Image', image)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
 symbol_table["myPrint"] = myPrint
 symbol_table["nothing"] = do_nothing
 symbol_table["sumAB"] = sumAB
 symbol_table["load"] = load_image
 symbol_table["show"] = show_image
 symbol_table["tuple"] = gen_vector
+symbol_table["None"] = None
+# Add numpy functions
+symbol_table["np.mean"] = np.mean
+symbol_table["np.std"] = np.std
+symbol_table["np.var"] = np.var
+symbol_table["np.min"] = np.min
+symbol_table["np.max"] = np.max
+symbol_table["np.sum"] = np.sum
+symbol_table["np.prod"] = np.prod
+symbol_table["np.cumsum"] = np.cumsum
+symbol_table["np.where"] = np.where
 
 tokens = (
     'NUMBER',
     'VARIABLE',
+    'DOT',
     'PLUS',
     'MINUS',
     'TIMES',
@@ -55,7 +80,8 @@ tokens = (
     'STRING',
     'LBRACKET',
     'RBRACKET',
-    'COLON'
+    'COLON',
+    'NONE'
 )
 
 t_PLUS = r'\+'
@@ -71,6 +97,7 @@ t_CONNECT = r'->'
 t_LBRACKET = r'\['
 t_RBRACKET = r'\]'
 t_COLON = r':'
+t_DOT = r'\.'
 
 def t_STRING(t):
     r'\"(.)*\"'
@@ -84,6 +111,11 @@ def t_NUMBER(t):
 
 def t_VARIABLE(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
+    return t
+
+def t_NONE(t):
+    r'None'
+    t.value = None
     return t
 
 def t_error(t):
@@ -176,6 +208,8 @@ def p_expression_term(p):
     expression : term
                | string
                | list_access
+               | function_call
+               | none
     """
     p[0] = p[1]
 
@@ -202,6 +236,12 @@ def p_expression_minus(p):
     parseGraph.add_edge(node["counter"], p[1]["counter"])
     parseGraph.add_edge(node["counter"], p[3]["counter"])
     p[0] = node
+
+def p_none_def(p):
+    """
+    none : NONE
+    """
+    p[0] = add_node({'type': 'NONE', 'label': 'None', 'value': None})
 
 def p_term_exponent(p):
     """
@@ -252,8 +292,12 @@ def p_factor_num(p):
 def p_factor_variable(p):
     """
     factor : VARIABLE
+           | VARIABLE DOT VARIABLE
     """
-    p[0] = add_node({'type': 'VARIABLE', 'label': f'VAR_{p[1]}', 'value': p[1]})
+    if len(p) == 2:
+        p[0] = add_node({'type': 'VARIABLE', 'label': f'VAR_{p[1]}', 'value': p[1]})
+    else:
+        p[0] = add_node({'type': 'ATTRIBUTE', 'label': f'ATTR_{p[1]}.{p[3]}', 'value': f'{p[1]}.{p[3]}'})
 
 def p_factor_expr(p):
     """
@@ -272,15 +316,23 @@ def p_factor_function_call(p):
 def p_function_call_no_params(p):
     """
     function_call : VARIABLE LPAREN RPAREN
+                  | VARIABLE DOT VARIABLE LPAREN RPAREN
     """
-    p[0] = add_node({'type': 'FUNCTION_CALL', 'label': f'FUN_{p[1]}', 'value': p[1]})
+    if len(p) == 4:
+        p[0] = add_node({'type': 'FUNCTION_CALL', 'label': f'FUN_{p[1]}', 'value': p[1]})
+    else:
+        p[0] = add_node({'type': 'METHOD_CALL', 'label': f'METHOD_{p[1]}.{p[3]}', 'value': f'{p[1]}.{p[3]}'})
 
 def p_function_call_params(p):
     """
     function_call : VARIABLE LPAREN params RPAREN
+                  | VARIABLE DOT VARIABLE LPAREN params RPAREN
     """
-    node = add_node({'type': 'FUNCTION_CALL', 'label': f'FUN_{p[1]}', 'value': p[1]})
-    for n in p[3]:
+    if len(p) == 5:
+        node = add_node({'type': 'FUNCTION_CALL', 'label': f'FUN_{p[1]}', 'value': p[1]})
+    else:
+        node = add_node({'type': 'METHOD_CALL', 'label': f'METHOD_{p[1]}.{p[3]}', 'value': f'{p[1]}.{p[3]}'})
+    for n in p[len(p) - 2]:
         parseGraph.add_edge(node["counter"], n["counter"])
     p[0] = node
 
@@ -395,7 +447,13 @@ def visit_node(tree, node_id, from_id):
         print("ERROR! Variable not found, returning 0")
         return 0
 
-    if current_node["type"] == "FUNCTION_CALL" or current_node["type"] == "FLOW_FUNCTION_CALL":
+    if current_node["type"] == "ATTRIBUTE":
+        if current_node["value"] in symbol_table:
+            return symbol_table[current_node["value"]]
+        print("ERROR! Attribute not found, returning 0")
+        return 0
+
+    if current_node["type"] == "FUNCTION_CALL" or current_node["type"] == "METHOD_CALL":
         if current_node["value"] in symbol_table:
             return symbol_table[current_node["value"]](*res) if res else symbol_table[current_node["value"]]()
         fn = search_cv2(current_node["value"])

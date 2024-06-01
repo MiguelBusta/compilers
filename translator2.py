@@ -9,6 +9,7 @@ import ply.yacc as yacc #syntactic analyzer
 import networkx as nx
 import matplotlib.pyplot as plt #plot data
 import cv2
+import numpy as np
 from networkx.drawing.nx_pydot import graphviz_layout #plot graphs
 from library import * #customize library to import functions
 
@@ -60,6 +61,16 @@ symbol_table["load"] = load_image
 symbol_table["show"] = show_image
 symbol_table["tuple"] = gen_vector
 symbol_table["None"] = None
+# Add numpy functions
+symbol_table["np.mean"] = np.mean
+symbol_table["np.std"] = np.std
+symbol_table["np.var"] = np.var
+symbol_table["np.min"] = np.min
+symbol_table["np.max"] = np.max
+symbol_table["np.sum"] = np.sum
+symbol_table["np.prod"] = np.prod
+symbol_table["np.cumsum"] = np.cumsum
+symbol_table["np.where"] = np.where
 
 tokens = (
     'NUMBER',

@@ -54,7 +54,8 @@ tokens = (
     'CONNECT',
     'STRING',
     'LBRACKET',
-    'RBRACKET'
+    'RBRACKET',
+    'COLON'
 )
 
 t_PLUS = r'\+'
@@ -69,6 +70,7 @@ t_COMMA = r','
 t_CONNECT = r'->'
 t_LBRACKET = r'\['
 t_RBRACKET = r'\]'
+t_COLON = r':'
 
 def t_STRING(t):
     r'\"(.)*\"'
@@ -93,11 +95,21 @@ lexer = lex.lex()
 def p_assignment_assign(p):
     """
     assignment : VARIABLE EQUAL expression
+               | VARIABLE LBRACKET expression RBRACKET EQUAL expression
+               | list_access EQUAL expression
     """
     node = add_node({'type': 'ASSIGN', 'label': '=', 'value': ''})
-    node_var = add_node({'type': 'VARIABLE_ASSIGN', 'label': f'VAR_{p[1]}', 'value': p[1]})
-    parseGraph.add_edge(node["counter"], node_var["counter"])
-    parseGraph.add_edge(node["counter"], p[3]["counter"])
+    if len(p) == 4:
+        node_var = add_node({'type': 'VARIABLE_ASSIGN', 'label': f'VAR_{p[1]}', 'value': p[1]})
+        parseGraph.add_edge(node["counter"], node_var["counter"])
+        parseGraph.add_edge(node["counter"], p[3]["counter"])
+    elif len(p) == 7:
+        node_list = add_node({'type': 'LIST_ASSIGN', 'label': 'LIST_ASSIGN', 'value': p[1]})
+        parseGraph.add_edge(node["counter"], node_list["counter"])
+        parseGraph.add_edge(node["counter"], p[6]["counter"])
+    else:
+        parseGraph.add_edge(node["counter"], p[1]["counter"])
+        parseGraph.add_edge(node["counter"], p[3]["counter"])
     p[0] = node
 
 def p_assignment_flow(p):
@@ -162,8 +174,8 @@ def p_assignment_expression(p):
 def p_expression_term(p):
     """
     expression : term
-                | string
-                | list_access
+               | string
+               | list_access
     """
     p[0] = p[1]
 
@@ -304,9 +316,27 @@ def p_elements(p):
 def p_list_access(p):
     """
     list_access : VARIABLE LBRACKET expression RBRACKET
+                | VARIABLE LBRACKET expression COLON expression RBRACKET
+                | VARIABLE LBRACKET COLON expression RBRACKET
+                | VARIABLE LBRACKET expression COLON RBRACKET
+                | VARIABLE LBRACKET COLON RBRACKET
+                | list_access LBRACKET expression RBRACKET
     """
-    node = add_node({'type': 'LIST_ACCESS', 'label': 'LIST_ACCESS', 'value': p[1]})
-    parseGraph.add_edge(node["counter"], p[3]["counter"])
+    if len(p) == 5:
+        node = add_node({'type': 'LIST_ACCESS', 'label': 'LIST_ACCESS', 'value': p[1]})
+        parseGraph.add_edge(node["counter"], p[3]["counter"])
+    elif len(p) == 7:
+        node = add_node({'type': 'SLICE_ACCESS', 'label': 'SLICE_ACCESS', 'value': p[1]})
+        parseGraph.add_edge(node["counter"], p[3]["counter"])
+        parseGraph.add_edge(node["counter"], p[5]["counter"])
+    elif p[3] == ':':
+        node = add_node({'type': 'SLICE_ACCESS', 'label': 'SLICE_ACCESS', 'value': p[1]})
+        parseGraph.add_edge(node["counter"], add_node({'type': 'NUMBER', 'label': '0', 'value': 0})["counter"])
+        parseGraph.add_edge(node["counter"], add_node({'type': 'NUMBER', 'label': 'end', 'value': -1})["counter"])
+    else:
+        node = add_node({'type': 'SLICE_ACCESS', 'label': 'SLICE_ACCESS', 'value': p[1]})
+        parseGraph.add_edge(node["counter"], p[3]["counter"])
+        parseGraph.add_edge(node["counter"], add_node({'type': 'NUMBER', 'label': 'end', 'value': -1})["counter"])
     p[0] = node
 
 def p_error(p):
@@ -328,15 +358,22 @@ def visit_node(tree, node_id, from_id):
     res = []
     for c in children:
         if c != from_id:
-            res.append(visit_node(tree, c, node_id))
+            child_result = visit_node(tree, c, node_id)
+            if child_result is not None:
+                res.append(child_result)
     current_node = tree.nodes[node_id]
 
     if current_node["type"] == "INITIAL":
-        return res[0]
+        if res:
+            return res[0]
+        return None
 
     if current_node["type"] == "ASSIGN":
-        symbol_table[res[0]] = res[1]
-        return res[1]
+        if len(res) >= 2:
+            symbol_table[res[0]] = res[1]
+            return res[1]
+        print("ERROR! Assignment requires at least two values")
+        return None
 
     if current_node["type"] == "NUMBER":
         return current_node["value"]
@@ -345,7 +382,9 @@ def visit_node(tree, node_id, from_id):
         return current_node["value"]
 
     if current_node["type"] == "PENDING_NODE":
-        return res[0]
+        if res:
+            return res[0]
+        return None
 
     if current_node["type"] == "VARIABLE_ASSIGN":
         return current_node["value"]
@@ -353,51 +392,84 @@ def visit_node(tree, node_id, from_id):
     if current_node["type"] == "VARIABLE":
         if current_node["value"] in symbol_table:
             return symbol_table[current_node["value"]]
-        print("ERROR! Variable not found, returning 0 ")
+        print("ERROR! Variable not found, returning 0")
         return 0
 
     if current_node["type"] == "FUNCTION_CALL" or current_node["type"] == "FLOW_FUNCTION_CALL":
         if current_node["value"] in symbol_table:
-            if len(res) > 0:
-                return symbol_table[current_node["value"]](*res)
-            else:
-                return symbol_table[current_node["value"]]()
-        else:
-            fn = search_cv2(current_node["value"])
-            if fn is not None:
-                return fn(*res)
-
-        print("ERROR! FUNCTION not found, returning 0 ")
+            return symbol_table[current_node["value"]](*res) if res else symbol_table[current_node["value"]]()
+        fn = search_cv2(current_node["value"])
+        if fn is not None:
+            return fn(*res)
+        print("ERROR! Function not found, returning 0")
         return 0
 
     if current_node["type"] == "PLUS":
-        return res[0] + res[1]
+        if len(res) >= 2:
+            return res[0] + res[1]
+        print("ERROR! Plus operation requires at least two values")
+        return None
 
     if current_node["type"] == "MINUS":
-        return res[0] - res[1]
+        if len(res) >= 2:
+            return res[0] - res[1]
+        print("ERROR! Minus operation requires at least two values")
+        return None
 
     if current_node["type"] == "TIMES":
-        return res[0] * res[1]
+        if len(res) >= 2:
+            return res[0] * res[1]
+        print("ERROR! Times operation requires at least two values")
+        return None
 
     if current_node["type"] == "DIV":
-        return res[0] / res[1]
+        if len(res) >= 2:
+            return res[0] / res[1]
+        print("ERROR! Division operation requires at least two values")
+        return None
 
     if current_node["type"] == "POWER":
-        return pow(res[0], res[1])
+        if len(res) >= 2:
+            return pow(res[0], res[1])
+        print("ERROR! Power operation requires at least two values")
+        return None
 
     if current_node["type"] == "GROUP":
-        return res[0]
+        if res:
+            return res[0]
+        return None
 
     if current_node["type"] == "LIST":
-        return [visit_node(tree, c, node_id) for c in children]
+        list_elements = [visit_node(tree, c, node_id) for c in children]
+        return [elem for elem in list_elements if elem is not None]
 
     if current_node["type"] == "LIST_ACCESS":
         var_name = current_node["value"]
-        index = res[0]
-        if var_name in symbol_table and isinstance(symbol_table[var_name], list):
-            return symbol_table[var_name][index]
-        print("ERROR! List or index not found, returning 0 ")
+        if len(res) == 1:
+            index = res[0]
+            if var_name in symbol_table and isinstance(symbol_table[var_name], list):
+                return symbol_table[var_name][index]
+        if len(res) == 2:
+            sublist_var = visit_node(tree, children[0], node_id)
+            index = res[1]
+            if isinstance(sublist_var, list):
+                return sublist_var[index]
+        print("ERROR! List or index not found, returning 0")
         return 0
+
+    if current_node["type"] == "SLICE_ACCESS":
+        var_name = current_node["value"]
+        if len(res) == 2:
+            start = res[0]
+            end = res[1]
+            if end == -1:
+                end = None
+            if var_name in symbol_table and isinstance(symbol_table[var_name], list):
+                return symbol_table[var_name][start:end]
+        print("ERROR! Slice or indices not found, returning 0")
+        return 0
+
+    return None
 
 parser = yacc.yacc()
 
@@ -417,12 +489,16 @@ def execute_from_file(input_file, output_file):
         parseGraph = nx.Graph()
         NODE_COUNTER = 0
         root = add_node({"type": "INITIAL", "label": "INIT"})
-        result = parser.parse(data)
-
-        parseGraph.add_edge(root["counter"], result["counter"])
-
-        result_value = execute_parse_tree(parseGraph)
-        results.append(f"The result of this operation '{data}' is '{result_value}'")
+        try:
+            result = parser.parse(data)
+            if result is not None:
+                parseGraph.add_edge(root["counter"], result["counter"])
+                result_value = execute_parse_tree(parseGraph)
+                results.append(f"The result of this operation '{data}' is '{result_value}'")
+            else:
+                results.append(f"Syntax error in operation '{data}'")
+        except Exception as e:
+            results.append(f"Error in operation '{data}': {e}")
 
     with open(output_file, 'w') as f:
         for result in results:

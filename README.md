@@ -70,7 +70,36 @@ Summation graph representation.
 
 ![Load image](imageesmkd/valueAccess.png)
 
+In case of the sumAB the following visualization is the following: 
+
+```
+list=[1,2,3,4,22]
+
+>sumAB(x,list[4])
+Result 25
+```
+![Load image](imageesmkd/SumAB.png)
+
 ### Numpy installation
+---
+Numpy is an almost elementary library needed for the use of statistics, and other values for basic mathematics. The need to have them in access imperative and therefore the following installations have been done.
+
+The code has the following to bring the library acts as the following.
+
+Import 9 different libraries are the following:
+
+* mean
+* standard deviation
+* variance
+* min
+* max
+* array
+* summation 
+* product
+* cumulative sum
+* where
+
+
 ### Numpy implementation
 ### Unit Testing Devlopment
 ### Unit Testing of Capacities

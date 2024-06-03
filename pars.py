@@ -61,7 +61,7 @@ symbol_table["np.max"] = np.max
 symbol_table["np.sum"] = np.sum
 symbol_table["np.prod"] = np.prod
 symbol_table["np.cumsum"] = np.cumsum
-symbol_table["np.where"] = np.where
+symbol_table["linspace"] = np.linspace
 
 tokens = (
     'NUMBER',

@@ -93,11 +93,10 @@ Import 9 different libraries are the following:
 * variance
 * min
 * max
-* array
 * summation 
 * product
 * cumulative sum
-* where
+* linspace
 
 
 ### Numpy implementation

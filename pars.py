@@ -60,8 +60,8 @@ symbol_table["np.min"] = np.min
 symbol_table["np.max"] = np.max
 symbol_table["np.sum"] = np.sum
 symbol_table["np.prod"] = np.prod
-symbol_table["np.cumsum"] = np.cumsum
-symbol_table["linspace"] = np.linspace
+symbol_table["np.cumsum"] = lambda x: np.cumsum(x).tolist()
+symbol_table["linspace"] = lambda start, stop, num: np.linspace(start, stop, num).astype(int).tolist()
 
 tokens = (
     'NUMBER',
@@ -590,4 +590,4 @@ while True:
     result_value = execute_parse_tree(parseGraph)
     print("Result", result_value)
 
-print("\nended")
+print("ended")

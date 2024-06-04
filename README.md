@@ -106,8 +106,6 @@ Summation, Cumulative Sum and Product are perfect to test the list acessing capa
 
 Linspace test out the list creation automatically.
 
-
-
 ### Numpy implementation
 ---
 #### Step in common
@@ -118,10 +116,53 @@ Every library is imported with the following code:
 import numpy as np
 ```
 
-With this step the code can add otheer numpy libraries if needed.
+With this step the code can add other numpy libraries if needed.
 
 #### Mean
-The first step is
+
+Firstly the code brings to the symbol table np.mean as np.mean. This function calculates the mean (average) of a list of numbers. 
+
+```
+symbol_table["np.mean"] = np.mean
+```
+
+Aswell as the related tokens to np.mean([x,1,2])
+
+```
+'LPAREN',
+'RPAREN',
+```
+Relevant regex expression 
+```
+def t_NUMBER(t):
+    r'\d+\.?\d*'
+    t.value = float(t.value) if '.' in t.value else int(t.value)
+    return t
+
+def t_VARIABLE(t):
+    r'[a-zA-Z_][a-zA-Z0-9_]*'
+    return t    
+
+def p_term_num(p):
+    """
+    term : NUMBER
+    """
+    n = add_node({'type': 'NUMBER', 'label': f'NUM_{p[1]}', 'value': p[1]})
+    p[0] = n    
+```
+
+With this implementation the translator has the capacity to run code. Here is a test example: 
+
+```
+#Input
+m=[1,2,3,4,5]
+mean_result=np.mean(m)
+
+#Result
+The result of this operation 'm=[1,2,3,4,5]' is '[1, 2, 3, 4, 5]'
+The result of this operation 'mean_result=np.mean(m)' is '3.0'
+```
+
 
 #### Standard Deviation
 
@@ -191,6 +232,7 @@ print("The minimum value is:", minimum_value)
 ```
 In this example, np.min(numbers) will return the minimum value from the list, which is `1`.
 
+<<<<<<< HEAD
 #### Sum
 `np.sum()` is another function from the `numpy`library, designed to compute the sum of elements within a list or array of numbers. Let's break down its usage within the context of the code:
 
@@ -203,6 +245,18 @@ This inclusion allows for the invocation of `np.sum` from the expressions parsed
 The `np.sum()` function calculates the sum of all elements in the provided array or along a specified axis. It returns the sum of the elements as a single scalar value.
 
 Consider an example where you have a list of numbers and you want to compute their sum:
+=======
+#### Maximum Value
+
+`np.max()` is another function from the NumPy library, specifically used to calculate the maximum value of a list or array of numbers. In this case, np.max is added to the symbol_table in your code:
+
+
+This means that it can be invoked from the expressions being parsed by the parser.
+
+The `np.max()` function computes the maximum value of the given data. It tells you the highest value in a dataset.
+
+In a python  script it follows this structure:
+>>>>>>> afc9397c6694e8467ac6ff64686c500c51ae9253
 
 ```
 import numpy as np
@@ -210,6 +264,7 @@ import numpy as np
 # Example list of numbers
 numbers = [1, 2, 3, 4, 5]
 
+<<<<<<< HEAD
 # Calculate the sum using np.sum
 sum_value = np.sum(numbers)
 print("The sum of the numbers is:", sum_value)
@@ -217,6 +272,21 @@ print("The sum of the numbers is:", sum_value)
 
 In this example, `np.sum(numbers)` will return `15`, which is the sum of all the numbers in the list.
 
+=======
+# Calculate the maximum value using np.max
+max_value = np.max(numbers)
+print("The maximum value is:", max_value)
+```
+
+In our translator the past code looks as the following:
+```
+m=[1,2,3,4,5]
+max_result=np.max(m)
+
+#Result
+The result of this operation 'max_result=np.max(m)' is '5'
+```
+>>>>>>> afc9397c6694e8467ac6ff64686c500c51ae9253
 
 
 ### Unit Testing Devlopment

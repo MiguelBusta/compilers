@@ -654,3 +654,36 @@ Sure! Let's walk through each expression and statement step-by-step to explain h
   - Calls `linspace(0, 10, 5)`, which returns `[0, 2, 5, 7, 10]`.
   - Assigns `[0, 2, 5, 7, 10]` to `linspace_result`.
 - **Result**: `linspace_result = [0, 2, 5, 7, 10]`
+
+### References
+
+Certainly! Here is the reference list in APA format, written in Markdown, with plain text links.
+
+---
+
+### References
+
+1. Dabeaz LLC. (n.d.). *PLY (Python Lex-Yacc)*. Retrieved from http://www.dabeaz.com/ply/
+
+2. NetworkX Developers. (n.d.). *NetworkX Documentation*. Retrieved from https://networkx.github.io/documentation/stable/
+
+3. Matplotlib Development Team. (n.d.). *Matplotlib Documentation*. Retrieved from https://matplotlib.org/stable/contents.html
+
+4. OpenCV Developers. (n.d.). *OpenCV Documentation*. Retrieved from https://docs.opencv.org/4.x/
+
+5. NumPy Developers. (n.d.). *NumPy Documentation*. Retrieved from https://numpy.org/doc/stable/
+
+6. Python Software Foundation. (n.d.). *Python Documentation*. Retrieved from https://docs.python.org/3/
+
+7. Graphviz Developers. (n.d.). *Graphviz Documentation*. Retrieved from https://graphviz.org/documentation/
+
+8. Python Software Foundation. (n.d.). *Regular Expressions HOWTO*. Retrieved from https://docs.python.org/3/howto/regex.html
+
+9. Python Software Foundation. (n.d.). *Lambda Functions Documentation*. Retrieved from https://docs.python.org/3/tutorial/controlflow.html#lambda-expressions
+
+10. Python Software Foundation. (n.d.). *Exception Handling Documentation*. Retrieved from https://docs.python.org/3/tutorial/errors.html
+
+11. Python Software Foundation. (n.d.). *Python Data Types*. Retrieved from https://docs.python.org/3/library/stdtypes.html
+
+12. OpenAI. (n.d.). *OpenAI Documentation*. Retrieved from https://beta.openai.com/docs/
+

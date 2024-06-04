@@ -191,7 +191,33 @@ print("The minimum value is:", minimum_value)
 ```
 In this example, np.min(numbers) will return the minimum value from the list, which is `1`.
 
-#### 
+#### Sum
+`np.sum()` is another function from the `numpy`library, designed to compute the sum of elements within a list or array of numbers. Let's break down its usage within the context of the code:
+
+`np.sum` is included in the `symbol_table`using the following code:
+
+`symbol_table["np.sum"] = np.sum`
+
+This inclusion allows for the invocation of `np.sum` from the expressions parsed by your parser.
+
+The `np.sum()` function calculates the sum of all elements in the provided array or along a specified axis. It returns the sum of the elements as a single scalar value.
+
+Consider an example where you have a list of numbers and you want to compute their sum:
+
+```
+import numpy as np
+
+# Example list of numbers
+numbers = [1, 2, 3, 4, 5]
+
+# Calculate the sum using np.sum
+sum_value = np.sum(numbers)
+print("The sum of the numbers is:", sum_value)
+```
+
+In this example, `np.sum(numbers)` will return `15`, which is the sum of all the numbers in the list.
+
+
 
 ### Unit Testing Devlopment
 ### Unit Testing of Capacities

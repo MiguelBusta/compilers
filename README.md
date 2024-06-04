@@ -365,4 +365,292 @@ Lexical Analysis: The lexer identifies tokens:
 * It calls the lambda function with linspace(0, 10, 5), which computes the values: [0, 2, 5, 7, 10] (or similar, depending on how rounding is handled).
 * It returns the result as a list of integers: [0, 2, 5, 7, 10].
 ### Unit Testing Devlopment
+----
+To implement unit testing of translator there must be a way to run secuentially an without manual input. For this a text reader was implementen which reads a `.txt` file named `execute.txt` 
+
+For this case the translator got implemented the capacity to read this text with the following code process. 
+
+Step 1: Importing and Executing Commands from a File
+The function execute_from_file is designed to read expressions from a file, execute them, and write the results to another file.
+
+```
+def execute_from_file(input_file, output_file):
+    global parseGraph, NODE_COUNTER
+    
+    with open(input_file, 'r') as f:
+        lines = f.readlines()
+
+    results = []
+
+    for data in lines:
+        data = data.strip()
+        if not data:
+            continue
+
+        parseGraph = nx.Graph()
+        NODE_COUNTER = 0
+        root = add_node({"type": "INITIAL", "label": "INIT"})
+        try:
+            result = parser.parse(data)
+            if result is not None:
+                parseGraph.add_edge(root["counter"], result["counter"])
+                result_value = execute_parse_tree(parseGraph)
+                results.append(f"The result of this operation '{data}' is '{result_value}'")
+            else:
+                results.append(f"Syntax error in operation '{data}'")
+        except Exception as e:
+            results.append(f"Error in operation '{data}': {e}")
+
+    with open(output_file, 'w') as f:
+        for result in results:
+            f.write(result + '\n')
+```
+
+Step 2: Reading Expressions from the Input File
+The function begins by opening the input file and reading its contents line by line:
+
+```
+with open(input_file, 'r') as f:
+    lines = f.readlines()
+```
+
+Step 3: Processing Each Expression
+For each line (expression) in the file, the function performs several steps:
+
+1. Strip and Skip Empty Lines:
+    ```
+    data = data.strip()
+    if not data:
+        continue
+    ```
+2. Initialize the Parse Graph:
+
+    ```
+    parseGraph = nx.Graph()
+    NODE_COUNTER = 0
+    root = add_node({"type": "INITIAL", "label": "INIT"})
+    ```
+3. Parse and Execute the Expression:
+
+    ```
+    try:
+        result = parser.parse(data)
+        if result is not None:
+            parseGraph.add_edge(root["counter"], result["counter"])
+            result_value = execute_parse_tree(parseGraph)
+            results.append(f"The result of this operation '{data}' is '{result_value}'")
+        else:
+            results.append(f"Syntax error in operation '{data}'")
+    except Exception as e:
+        results.append(f"Error in operation '{data}': {e}")
+    ```
+Step 4: Writing Results to the Output File
+After processing all expressions, the function writes the results to the output file:
+
+```
+with open(output_file, 'w') as f:
+    for result in results:
+        f.write(result + '\n')
+```
+
+Step 5: Integrating File Execution in the Interactive Loop
+The interactive loop allows users to trigger file-based execution with the execute command:
+
+```
+while True:
+    data = input(">")
+    if data == 'exit':
+        break
+    if data == 'st':
+        print(symbol_table)
+        continue
+    if data == 'execute':
+        execute_from_file('execute.txt', 'results.txt')
+        print("Execution completed and results saved to 'results.txt'")
+        continue
+
+    parseGraph = nx.Graph()
+    NODE_COUNTER = 0
+    root = add_node({"type": "INITIAL", "label": "INIT"})
+    result = parser.parse(data)
+
+    parseGraph.add_edge(root["counter"], result["counter"])
+
+    labels = nx.get_node_attributes(parseGraph, "label")
+    pos = graphviz_layout(parseGraph, prog="dot")
+    nx.draw(parseGraph, pos, labels=labels, with_labels=True)
+    plt.show()
+
+    result_value = execute_parse_tree(parseGraph)
+    print("Result", result_value)
+
+print("ended")
+```
+
+Summary
+The `execute_from_file` function reads expressions from an input file, parses and executes each expression, and writes the results to an output file. This functionality is integrated into the interactive loop, allowing users to easily execute a batch of commands from a file and save the results. The process involves reading the file, parsing and executing each line, handling errors, and writing the output, ensuring a smooth and automated workflow for batch processing.
+
 ### Unit Testing of Capacities
+
+Sure! Let's walk through each expression and statement step-by-step to explain how they are parsed, executed, and their results.
+
+### 1. Simple Arithmetic Expression: `2 + 2`
+
+- **Lexical Analysis**: The lexer identifies tokens: `NUMBER(2)`, `PLUS(+)`, `NUMBER(2)`.
+- **Parsing**: The parser constructs a parse tree with a `PLUS` node and two child `NUMBER` nodes.
+- **Execution**: The `execute_parse_tree` function processes the tree:
+  - Visits the `PLUS` node.
+  - Evaluates its children: `2` and `2`.
+  - Computes the sum: `2 + 2 = 4`.
+- **Result**: `4`
+
+### 2. Variable Assignment: `x = 3`
+
+- **Lexical Analysis**: The lexer identifies tokens: `VARIABLE(x)`, `EQUAL(=)`, `NUMBER(3)`.
+- **Parsing**: The parser constructs a parse tree with an `ASSIGN` node, a `VARIABLE_ASSIGN` node (`x`), and a `NUMBER` node (`3`).
+- **Execution**: The `execute_parse_tree` function processes the tree:
+  - Visits the `ASSIGN` node.
+  - Assigns the value `3` to the variable `x` in the `symbol_table`.
+- **Result**: `x = 3`
+
+### 3. Variable Assignment: `y = 2`
+
+- **Lexical Analysis**: The lexer identifies tokens: `VARIABLE(y)`, `EQUAL(=)`, `NUMBER(2)`.
+- **Parsing**: Similar to the previous step, a parse tree with an `ASSIGN` node, a `VARIABLE_ASSIGN` node (`y`), and a `NUMBER` node (`2`) is created.
+- **Execution**: The value `2` is assigned to `y` in the `symbol_table`.
+- **Result**: `y = 2`
+
+### 4. Arithmetic with Variables: `y = x * y`
+
+- **Lexical Analysis**: The lexer identifies tokens: `VARIABLE(y)`, `EQUAL(=)`, `VARIABLE(x)`, `TIMES(*)`, `VARIABLE(y)`.
+- **Parsing**: The parser constructs a tree with an `ASSIGN` node, a `VARIABLE_ASSIGN` node (`y`), and a `TIMES` node with children `VARIABLE(x)` and `VARIABLE(y)`.
+- **Execution**: The `execute_parse_tree` function processes the tree:
+  - Retrieves the values of `x` and `y` from the `symbol_table`: `x = 3` and `y = 2`.
+  - Computes the product: `3 * 2 = 6`.
+  - Assigns `6` to `y`.
+- **Result**: `y = 6`
+
+### 5. Function Call: `sumAB(x, y)`
+
+- **Lexical Analysis**: The lexer identifies tokens: `VARIABLE(sumAB)`, `LPAREN(()`, `VARIABLE(x)`, `COMMA(,)`, `VARIABLE(y)`, `RPAREN())`.
+- **Parsing**: The parser constructs a tree with a `FUNCTION_CALL` node for `sumAB`, and two child nodes for `x` and `y`.
+- **Execution**: The `execute_parse_tree` function processes the tree:
+  - Retrieves the values of `x` and `y`: `x = 3`, `y = 6`.
+  - Calls `sumAB(3, 6)`, which returns `3 + 6 = 9`.
+- **Result**: `9`
+
+### 6. List Assignment: `z = [1, 3, 4, 5]`
+
+- **Lexical Analysis**: The lexer identifies tokens: `VARIABLE(z)`, `EQUAL(=)`, `LBRACKET([)`, `NUMBER(1)`, `COMMA(,)`, `NUMBER(3)`, `COMMA(,)`, `NUMBER(4)`, `COMMA(,)`, `NUMBER(5)`, `RBRACKET(])`.
+- **Parsing**: The parser constructs a tree with an `ASSIGN` node, a `VARIABLE_ASSIGN` node (`z`), and a `LIST` node with child `NUMBER` nodes.
+- **Execution**: The `execute_parse_tree` function processes the tree:
+  - Creates a list `[1, 3, 4, 5]`.
+  - Assigns the list to `z`.
+- **Result**: `z = [1, 3, 4, 5]`
+
+### 7. List Assignment: `t = [0, 5, 4, 23, 6]`
+
+- **Lexical Analysis**: Similar to the previous step.
+- **Parsing**: Similar to the previous step, creating an `ASSIGN` node with a `LIST` node.
+- **Execution**: The `execute_parse_tree` function assigns the list `[0, 5, 4, 23, 6]` to `t`.
+- **Result**: `t = [0, 5, 4, 23, 6]`
+
+### 8. List Access: `o = z[2]`
+
+- **Lexical Analysis**: The lexer identifies tokens: `VARIABLE(o)`, `EQUAL(=)`, `VARIABLE(z)`, `LBRACKET([)`, `NUMBER(2)`, `RBRACKET(])`.
+- **Parsing**: The parser constructs a tree with an `ASSIGN` node, a `VARIABLE_ASSIGN` node (`o`), and a `LIST_ACCESS` node with a `VARIABLE` node (`z`) and a `NUMBER` node (`2`).
+- **Execution**: The `execute_parse_tree` function processes the tree:
+  - Retrieves the list `z` and accesses the element at index `2`: `z[2] = 4`.
+  - Assigns `4` to `o`.
+- **Result**: `o = 4`
+
+### 9. List Access: `l = t[3]`
+
+- **Lexical Analysis**: Similar to the previous step.
+- **Parsing**: Similar to the previous step, with `VARIABLE(t)` and `NUMBER(3)`.
+- **Execution**: The `execute_parse_tree` function retrieves `t[3] = 23` and assigns `23` to `l`.
+- **Result**: `l = 23`
+
+### 10. Arithmetic with List Access: `l + o`
+
+- **Lexical Analysis**: The lexer identifies tokens: `VARIABLE(l)`, `PLUS(+)`, `VARIABLE(o)`.
+- **Parsing**: The parser constructs a tree with a `PLUS` node and two child `VARIABLE` nodes (`l` and `o`).
+- **Execution**: The `execute_parse_tree` function retrieves the values `l = 23` and `o = 4`, then computes `23 + 4 = 27`.
+- **Result**: `27`
+
+### 11. List Assignment: `m = [1, 2, 3, 4, 5]`
+
+- **Lexical Analysis**: Similar to previous list assignments.
+- **Parsing**: Similar to previous list assignments.
+- **Execution**: The `execute_parse_tree` function assigns the list `[1, 2, 3, 4, 5]` to `m`.
+- **Result**: `m = [1, 2, 3, 4, 5]`
+
+### 12. Numpy Function: `mean_result = np.mean(m)`
+
+- **Lexical Analysis**: The lexer identifies tokens: `VARIABLE(mean_result)`, `EQUAL(=)`, `VARIABLE(np)`, `DOT(.)`, `VARIABLE(mean)`, `LPAREN(()`, `VARIABLE(m)`, `RPAREN())`.
+- **Parsing**: The parser constructs a tree with an `ASSIGN` node, a `VARIABLE_ASSIGN` node (`mean_result`), and a `METHOD_CALL` node (`np.mean`) with a `VARIABLE` node (`m`).
+- **Execution**: The `execute_parse_tree` function processes the tree:
+  - Retrieves the list `m`.
+  - Calls `np.mean([1, 2, 3, 4, 5])`, which returns `3.0`.
+  - Assigns `3.0` to `mean_result`.
+- **Result**: `mean_result = 3.0`
+
+### 13. Numpy Function: `std_result = np.std(m)`
+
+- **Lexical Analysis**: Similar to the previous numpy function call.
+- **Parsing**: Similar to the previous numpy function call, with `VARIABLE(std)`.
+- **Execution**: The `execute_parse_tree` function calls `np.std([1, 2, 3, 4, 5])`, which returns approximately `1.4142135623730951`.
+- **Result**: `std_result = 1.4142135623730951`
+
+### 14. Numpy Function: `var_result = np.var(m)`
+
+- **Lexical Analysis**: Similar to previous numpy function calls.
+- **Parsing**: Similar to previous numpy function calls, with `VARIABLE(var)`.
+- **Execution**: The `execute_parse_tree` function calls `np.var([1, 2, 3, 4, 5])`, which returns `2.0`.
+- **Result**: `var_result = 2.0`
+
+### 15. Numpy Function: `min_result = np.min(m)`
+
+- **Lexical Analysis**: Similar to
+
+ previous numpy function calls.
+- **Parsing**: Similar to previous numpy function calls, with `VARIABLE(min)`.
+- **Execution**: The `execute_parse_tree` function calls `np.min([1, 2, 3, 4, 5])`, which returns `1`.
+- **Result**: `min_result = 1`
+
+### 16. Numpy Function: `max_result = np.max(m)`
+
+- **Lexical Analysis**: Similar to previous numpy function calls.
+- **Parsing**: Similar to previous numpy function calls, with `VARIABLE(max)`.
+- **Execution**: The `execute_parse_tree` function calls `np.max([1, 2, 3, 4, 5])`, which returns `5`.
+- **Result**: `max_result = 5`
+
+### 17. Numpy Function: `sum_result = np.sum(m)`
+
+- **Lexical Analysis**: Similar to previous numpy function calls.
+- **Parsing**: Similar to previous numpy function calls, with `VARIABLE(sum)`.
+- **Execution**: The `execute_parse_tree` function calls `np.sum([1, 2, 3, 4, 5])`, which returns `15`.
+- **Result**: `sum_result = 15`
+
+### 18. Numpy Function: `prod_result = np.prod(m)`
+
+- **Lexical Analysis**: Similar to previous numpy function calls.
+- **Parsing**: Similar to previous numpy function calls, with `VARIABLE(prod)`.
+- **Execution**: The `execute_parse_tree` function calls `np.prod([1, 2, 3, 4, 5])`, which returns `120`.
+- **Result**: `prod_result = 120`
+
+### 19. Numpy Function: `cumsum_result = np.cumsum(m)`
+
+- **Lexical Analysis**: Similar to previous numpy function calls.
+- **Parsing**: Similar to previous numpy function calls, with `VARIABLE(cumsum)`.
+- **Execution**: The `execute_parse_tree` function calls `np.cumsum([1, 2, 3, 4, 5])`, which returns `[1, 3, 6, 10, 15]`.
+- **Result**: `cumsum_result = [1, 3, 6, 10, 15]`
+
+### 20. Numpy Function: `linspace_result = linspace(0, 10, 5)`
+
+- **Lexical Analysis**: The lexer identifies tokens: `VARIABLE(linspace_result)`, `EQUAL(=)`, `VARIABLE(linspace)`, `LPAREN(()`, `NUMBER(0)`, `COMMA(,)`, `NUMBER(10)`, `COMMA(,)`, `NUMBER(5)`, `RPAREN())`.
+- **Parsing**: The parser constructs a tree with an `ASSIGN` node, a `VARIABLE_ASSIGN` node (`linspace_result`), and a `FUNCTION_CALL` node (`linspace`) with three `NUMBER` nodes as parameters.
+- **Execution**: The `execute_parse_tree` function processes the tree:
+  - Calls `linspace(0, 10, 5)`, which returns `[0, 2, 5, 7, 10]`.
+  - Assigns `[0, 2, 5, 7, 10]` to `linspace_result`.
+- **Result**: `linspace_result = [0, 2, 5, 7, 10]`

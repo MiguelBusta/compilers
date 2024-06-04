@@ -123,5 +123,75 @@ With this step the code can add otheer numpy libraries if needed.
 #### Mean
 The first step is
 
+#### Standard Deviation
+
+`np.std()` is another function from the numpy library, specifically used to calculate the standard deviation of a list or array of numbers. 
+In this case `np.std` is added to the symbol_table in your code:
+
+`symbol_table["np.std"] = np.std`
+
+This means that it can be invoked from the expressions being parsed by the parser.
+
+The np.std() function computes the standard deviation of the given data. The standard deviation is a measure of the amount of variation or dispersion in a set of values. It tells you how much the values in a dataset differ from the mean value.
+
+Let's consider an example where you have a list of numbers and you want to calculate the standard deviation:
+
+```
+import numpy as np
+
+# Example list of numbers
+numbers = [1, 2, 3, 4, 5]
+
+# Calculate the standard deviation using np.std
+std_deviation = np.std(numbers)
+print("The standard deviation is:", std_deviation)
+```
+
+In this example, `np.std(numbers)` will return the standard deviation of the numbers in the list, providing a measure of how spread out the numbers are from the mean value.
+
+#### Variance
+The `np.var()` function computes the variance of the given data. Variance is a measure of how much the values in a dataset vary from the mean value. It is calculated as the average of the squared differences from the mean.
+
+Let's consider an example:
+
+```
+import numpy as np
+
+# Example list of numbers
+numbers = [1, 2, 3, 4, 5]
+
+# Calculate the variance using np.var
+variance = np.var(numbers)
+print("The variance is:", variance)
+```
+In this example, np.var(numbers) will return the variance of the numbers in the list, providing a measure of how spread out the numbers are from the mean value.
+
+This functionality enhances the parser's capabilities for statistical calculations, allowing it to handle tasks such as mean, standard deviation, and variance computations within the expressions it processes.
+
+#### Minimum value
+`np.min()` is a function from the `numpy` library that calculates the minimum value of a list or array of numbers:
+
+Like other numpy functions, np.min is added to the symbol_table in the code:
+
+`symbol_table["np.min"] = np.min`
+
+The `np.min()` function computes the minimum value of the given data. It returns the smallest value in an array or along a specified axis.
+
+Let's consider an example where you have a list of numbers and you want to find the minimum value:
+
+```
+import numpy as np
+
+# Example list of numbers
+numbers = [5, 3, 8, 1, 6]
+
+# Calculate the minimum value using np.min
+minimum_value = np.min(numbers)
+print("The minimum value is:", minimum_value)
+```
+In this example, np.min(numbers) will return the minimum value from the list, which is `1`.
+
+#### 
+
 ### Unit Testing Devlopment
 ### Unit Testing of Capacities

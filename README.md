@@ -313,5 +313,30 @@ result = np.prod(x)
 
 "Result is 25"
 ``` 
+
+#### Cumulative sum
+`np.cumsum`is added to the `symbol_table`using the following code:
+
+`symbol_table["np.cumsum"] = lambda x: np.cumsum(x).tolist()`
+
+This addition enables you to invoke `np.cumsum`from the expressions parsed by the parser.
+
+The np.cumsum() function computes the cumulative sum of elements along a specified axis. It returns an array where each element is the cumulative sum of the elements up to that point in the original array.
+
+Here is an example:
+
+```
+import numpy as np
+
+# Example list of numbers
+numbers = [1, 2, 3, 4, 5]
+
+# Calculate the cumulative sum using np.cumsum
+cumulative_sum = np.cumsum(numbers)
+print("The cumulative sum of the numbers is:", cumulative_sum)
+```
+
+In this example, `np.cumsum(numbers)` will return `[1, 3, 6, 10, 15]`, which represents the cumulative sum of the numbers `[1, 2, 3, 4, 5]`.
+
 ### Unit Testing Devlopment
 ### Unit Testing of Capacities

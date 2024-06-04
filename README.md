@@ -338,5 +338,31 @@ print("The cumulative sum of the numbers is:", cumulative_sum)
 
 In this example, `np.cumsum(numbers)` will return `[1, 3, 6, 10, 15]`, which represents the cumulative sum of the numbers `[1, 2, 3, 4, 5]`.
 
+#### Linspace 
+
+Linspace is a np attribute that creates lists on steps of sequences. This makes easy to create a series with just a few lines of code.
+
+Firstly to implement linspace, the symbol table function must be created.
+```
+symbol_table["linspace"] = lambda start, stop, num: np.linspace(start, stop, num).astype(int).tolist()
+```
+
+By adding linspace to the symbol_table and implementing the function call parsing and execution logic, your system can correctly recognize and execute expressions involving linspace. The process involves lexical analysis, parsing to build a parse tree, and then executing the parse tree to compute the result.
+
+Here’s how the execution flow would work:
+
+```
+result = linspace(0, 10, 5)
+```
+
+Lexical Analysis: The lexer identifies tokens: 
+1. VARIABLE(linspace), LPAREN((), NUMBER(0), COMMA(,), NUMBER(10), COMMA(,), NUMBER(5), RPAREN()).
+2. Parsing: The parser constructs a parse tree with a FUNCTION_CALL node for linspace and child nodes for the parameters 0, 10, and 5.
+3. Execution: The execute_parse_tree function traverses the tree:
+* It reaches the FUNCTION_CALL node for linspace.
+* It retrieves the parameters 0, 10, and 5.
+* It looks up linspace in the symbol_table and finds the lambda function.
+* It calls the lambda function with linspace(0, 10, 5), which computes the values: [0, 2, 5, 7, 10] (or similar, depending on how rounding is handled).
+* It returns the result as a list of integers: [0, 2, 5, 7, 10].
 ### Unit Testing Devlopment
 ### Unit Testing of Capacities

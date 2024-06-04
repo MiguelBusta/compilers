@@ -29,7 +29,7 @@ load nameofthefile
 Example 
 
 ```
-load cv2.png
+load("cv2.png")
 ```
 
 After being executed the translator will show the following if ran from terminal:
@@ -98,7 +98,30 @@ Import 9 different libraries are the following:
 * cumulative sum
 * linspace
 
+Mean, standard deviation and variance were chosen as they are basic operations in staticstics and that also work with lists. 
+
+Minimum and Maximum are search operations that work on lists and return the lowest and highest values in a list. These operations should return a single value as result. 
+
+Summation, Cumulative Sum and Product are perfect to test the list acessing capabilities by the imported libraries. 
+
+Linspace test out the list creation automatically.
+
+
 
 ### Numpy implementation
+---
+#### Step in common
+
+Every library is imported with the following code: 
+
+```
+import numpy as np
+```
+
+With this step the code can add otheer numpy libraries if needed.
+
+#### Mean
+The first step is
+
 ### Unit Testing Devlopment
 ### Unit Testing of Capacities

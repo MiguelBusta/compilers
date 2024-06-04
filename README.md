@@ -18,6 +18,22 @@ The translator use the following structure:
 * Define Token management.
 * Node visiting process.
 * Checking the text file. 
+
+1. Imports and Initial Setup
+The code starts by importing necessary libraries:
+
+```
+import ply.lex as lex
+import ply.yacc as yacc
+import networkx as nx
+import matplotlib.pyplot as plt
+import cv2
+import numpy as np
+from networkx.drawing.nx_pydot import graphviz_layout
+from library import *
+```
+
+The libraries imported ha
 ### Image Processing
 ---
 The code being worked on has the capability to run a command and return the matrix of the values of a image using the command of: 
@@ -232,7 +248,6 @@ print("The minimum value is:", minimum_value)
 ```
 In this example, np.min(numbers) will return the minimum value from the list, which is `1`.
 
-<<<<<<< HEAD
 #### Sum
 `np.sum()` is another function from the `numpy`library, designed to compute the sum of elements within a list or array of numbers. Let's break down its usage within the context of the code:
 
@@ -245,7 +260,19 @@ This inclusion allows for the invocation of `np.sum` from the expressions parsed
 The `np.sum()` function calculates the sum of all elements in the provided array or along a specified axis. It returns the sum of the elements as a single scalar value.
 
 Consider an example where you have a list of numbers and you want to compute their sum:
-=======
+```
+import numpy as np
+
+# Example list of numbers
+numbers = [1, 2, 3, 4, 5]
+
+# Calculate the sum using np.sum
+sum_value = np.sum(numbers)
+print("The sum of the numbers is:", sum_value)
+```
+
+In this example, `np.sum(numbers)` will return `15`, which is the sum of all the numbers in the list.
+
 #### Maximum Value
 
 `np.max()` is another function from the NumPy library, specifically used to calculate the maximum value of a list or array of numbers. In this case, np.max is added to the symbol_table in your code:
@@ -256,28 +283,10 @@ This means that it can be invoked from the expressions being parsed by the parse
 The `np.max()` function computes the maximum value of the given data. It tells you the highest value in a dataset.
 
 In a python  script it follows this structure:
->>>>>>> afc9397c6694e8467ac6ff64686c500c51ae9253
-
 ```
-import numpy as np
-
-# Example list of numbers
-numbers = [1, 2, 3, 4, 5]
-
-<<<<<<< HEAD
-# Calculate the sum using np.sum
-sum_value = np.sum(numbers)
-print("The sum of the numbers is:", sum_value)
-```
-
-In this example, `np.sum(numbers)` will return `15`, which is the sum of all the numbers in the list.
-
-=======
-# Calculate the maximum value using np.max
 max_value = np.max(numbers)
 print("The maximum value is:", max_value)
 ```
-
 In our translator the past code looks as the following:
 ```
 m=[1,2,3,4,5]
@@ -286,8 +295,23 @@ max_result=np.max(m)
 #Result
 The result of this operation 'max_result=np.max(m)' is '5'
 ```
->>>>>>> afc9397c6694e8467ac6ff64686c500c51ae9253
 
+#### Product 
 
+This numoy atribute has the property to multiply the series of values in the list it is being saved on. In the translator the function runs in the following way succesfully:
+* The translator reaches the FUNCTION_CALL node for np.prod.
+* It retrieves the parameters [1, 2, 3, 4].
+* It looks up np.prod in the symbol_table and finds np.prod.
+* It calls np.prod([1, 2, 3, 4]), which computes the product: 
+* 1×2×3×4=24
+* It returns the result 24.
+
+Here is an example:
+```
+x =[1,2,3,4]
+result = np.prod(x)
+
+"Result is 25"
+``` 
 ### Unit Testing Devlopment
 ### Unit Testing of Capacities

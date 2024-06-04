@@ -232,7 +232,37 @@ print("The minimum value is:", minimum_value)
 ```
 In this example, np.min(numbers) will return the minimum value from the list, which is `1`.
 
-#### 
+#### Maximum Value
+
+`np.max()` is another function from the NumPy library, specifically used to calculate the maximum value of a list or array of numbers. In this case, np.max is added to the symbol_table in your code:
+
+
+This means that it can be invoked from the expressions being parsed by the parser.
+
+The `np.max()` function computes the maximum value of the given data. It tells you the highest value in a dataset.
+
+In a python  script it follows this structure:
+
+```
+import numpy as np
+
+# Example list of numbers
+numbers = [1, 2, 3, 4, 5]
+
+# Calculate the maximum value using np.max
+max_value = np.max(numbers)
+print("The maximum value is:", max_value)
+```
+
+In our translator the past code looks as the following:
+```
+m=[1,2,3,4,5]
+max_result=np.max(m)
+
+#Result
+The result of this operation 'max_result=np.max(m)' is '5'
+```
+
 
 ### Unit Testing Devlopment
 ### Unit Testing of Capacities

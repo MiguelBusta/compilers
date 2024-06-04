@@ -106,8 +106,6 @@ Summation, Cumulative Sum and Product are perfect to test the list acessing capa
 
 Linspace test out the list creation automatically.
 
-
-
 ### Numpy implementation
 ---
 #### Step in common
@@ -118,10 +116,53 @@ Every library is imported with the following code:
 import numpy as np
 ```
 
-With this step the code can add otheer numpy libraries if needed.
+With this step the code can add other numpy libraries if needed.
 
 #### Mean
-The first step is
+
+Firstly the code brings to the symbol table np.mean as np.mean. This function calculates the mean (average) of a list of numbers. 
+
+```
+symbol_table["np.mean"] = np.mean
+```
+
+Aswell as the related tokens to np.mean([x,1,2])
+
+```
+'LPAREN',
+'RPAREN',
+```
+Relevant regex expression 
+```
+def t_NUMBER(t):
+    r'\d+\.?\d*'
+    t.value = float(t.value) if '.' in t.value else int(t.value)
+    return t
+
+def t_VARIABLE(t):
+    r'[a-zA-Z_][a-zA-Z0-9_]*'
+    return t    
+
+def p_term_num(p):
+    """
+    term : NUMBER
+    """
+    n = add_node({'type': 'NUMBER', 'label': f'NUM_{p[1]}', 'value': p[1]})
+    p[0] = n    
+```
+
+With this implementation the translator has the capacity to run code. Here is a test example: 
+
+```
+#Input
+m=[1,2,3,4,5]
+mean_result=np.mean(m)
+
+#Result
+The result of this operation 'm=[1,2,3,4,5]' is '[1, 2, 3, 4, 5]'
+The result of this operation 'mean_result=np.mean(m)' is '3.0'
+```
+
 
 ### Unit Testing Devlopment
 ### Unit Testing of Capacities

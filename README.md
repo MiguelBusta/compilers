@@ -7,7 +7,7 @@ Manuel Barrera
 Miguel Bustamante
 ## Development Report
 ### Introduction
-The purpose of this document is to explain and explore the creation of a translator that acts like a compiler. The experiment has the capability of graphing the path that the compiler uses to access the values defined in our gramatic.
+The purpose of this document is to explain and explore the creation of a translator that acts like a compiler. The experiment has the capability of graphing the path that the compiler uses to access the values defined by our grammars.
 ### Translator Design
 ---
 The translator use the following structure:
@@ -33,7 +33,7 @@ from networkx.drawing.nx_pydot import graphviz_layout
 from library import *
 ```
 
-The libraries imported ha
+The libraries imported
 ### Image Processing
 ---
 The code being worked on has the capability to run a command and return the matrix of the values of a image using the command of: 
@@ -98,9 +98,8 @@ Result 25
 
 ### Numpy installation
 ---
-Numpy is an almost elementary library needed for the use of statistics, and other values for basic mathematics. The need to have them in access imperative and therefore the following installations have been done.
+Numpy is an almost elementary library needed for the use of statistics, and other values for basic mathematics. The need to have them in access is imperative and therefore the following installations have been done:
 
-The code has the following to bring the library acts as the following.
 
 Import 9 different libraries are the following:
 
@@ -167,7 +166,7 @@ def p_term_num(p):
     p[0] = n    
 ```
 
-With this implementation the translator has the capacity to run code. Here is a test example: 
+With this implementation the translator has the capacity to run code:
 
 ```
 #Input
@@ -183,7 +182,7 @@ The result of this operation 'mean_result=np.mean(m)' is '3.0'
 #### Standard Deviation
 
 `np.std()` is another function from the numpy library, specifically used to calculate the standard deviation of a list or array of numbers. 
-In this case `np.std` is added to the symbol_table in your code:
+In this case `np.std` is added to the symbol_table in the code:
 
 `symbol_table["np.std"] = np.std`
 
@@ -191,7 +190,7 @@ This means that it can be invoked from the expressions being parsed by the parse
 
 The np.std() function computes the standard deviation of the given data. The standard deviation is a measure of the amount of variation or dispersion in a set of values. It tells you how much the values in a dataset differ from the mean value.
 
-Let's consider an example where you have a list of numbers and you want to calculate the standard deviation:
+Example: We have a list of numbers and we want to calculate the standard deviation:
 
 ```
 import numpy as np
@@ -209,7 +208,7 @@ In this example, `np.std(numbers)` will return the standard deviation of the num
 #### Variance
 The `np.var()` function computes the variance of the given data. Variance is a measure of how much the values in a dataset vary from the mean value. It is calculated as the average of the squared differences from the mean.
 
-Let's consider an example:
+Example:
 
 ```
 import numpy as np
@@ -234,7 +233,7 @@ Like other numpy functions, np.min is added to the symbol_table in the code:
 
 The `np.min()` function computes the minimum value of the given data. It returns the smallest value in an array or along a specified axis.
 
-Let's consider an example where you have a list of numbers and you want to find the minimum value:
+Example: We have a list of numbers and we want to find the minimum value:
 
 ```
 import numpy as np
@@ -249,7 +248,7 @@ print("The minimum value is:", minimum_value)
 In this example, np.min(numbers) will return the minimum value from the list, which is `1`.
 
 #### Sum
-`np.sum()` is another function from the `numpy`library, designed to compute the sum of elements within a list or array of numbers. Let's break down its usage within the context of the code:
+`np.sum()` is another function from the `numpy`library, designed to compute the sum of elements within a list or array of numbers:
 
 `np.sum` is included in the `symbol_table`using the following code:
 
@@ -259,7 +258,7 @@ This inclusion allows for the invocation of `np.sum` from the expressions parsed
 
 The `np.sum()` function calculates the sum of all elements in the provided array or along a specified axis. It returns the sum of the elements as a single scalar value.
 
-Consider an example where you have a list of numbers and you want to compute their sum:
+Example: we have a list of numbers and we want to compute their sum:
 ```
 import numpy as np
 
@@ -280,7 +279,7 @@ In this example, `np.sum(numbers)` will return `15`, which is the sum of all the
 
 This means that it can be invoked from the expressions being parsed by the parser.
 
-The `np.max()` function computes the maximum value of the given data. It tells you the highest value in a dataset.
+The `np.max()` function computes the maximum value of the given data. It tells us the highest value in a dataset.
 
 In a python  script it follows this structure:
 ```
@@ -298,7 +297,7 @@ The result of this operation 'max_result=np.max(m)' is '5'
 
 #### Product 
 
-This numoy atribute has the property to multiply the series of values in the list it is being saved on. In the translator the function runs in the following way succesfully:
+This numoy atribute has the property to multiply the series of values in the list it is being saved on. In the translator the function runs in the following way:
 * The translator reaches the FUNCTION_CALL node for np.prod.
 * It retrieves the parameters [1, 2, 3, 4].
 * It looks up np.prod in the symbol_table and finds np.prod.
@@ -306,7 +305,7 @@ This numoy atribute has the property to multiply the series of values in the lis
 * 1×2×3×4=24
 * It returns the result 24.
 
-Here is an example:
+Example:
 ```
 x =[1,2,3,4]
 result = np.prod(x)
@@ -319,7 +318,7 @@ result = np.prod(x)
 
 `symbol_table["np.cumsum"] = lambda x: np.cumsum(x).tolist()`
 
-This addition enables you to invoke `np.cumsum`from the expressions parsed by the parser.
+This addition enables us to invoke `np.cumsum`from the expressions parsed by the parser.
 
 The np.cumsum() function computes the cumulative sum of elements along a specified axis. It returns an array where each element is the cumulative sum of the elements up to that point in the original array.
 
@@ -347,7 +346,7 @@ Firstly to implement linspace, the symbol table function must be created.
 symbol_table["linspace"] = lambda start, stop, num: np.linspace(start, stop, num).astype(int).tolist()
 ```
 
-By adding linspace to the symbol_table and implementing the function call parsing and execution logic, your system can correctly recognize and execute expressions involving linspace. The process involves lexical analysis, parsing to build a parse tree, and then executing the parse tree to compute the result.
+By adding linspace to the symbol_table and implementing the function call parsing and execution logic, the system can correctly recognize and execute expressions involving linspace. The process involves lexical analysis, parsing to build a parse tree, and then executing the parse tree to compute the result.
 
 Here’s how the execution flow would work:
 
@@ -487,12 +486,10 @@ while True:
 print("ended")
 ```
 
-Summary
-The `execute_from_file` function reads expressions from an input file, parses and executes each expression, and writes the results to an output file. This functionality is integrated into the interactive loop, allowing users to easily execute a batch of commands from a file and save the results. The process involves reading the file, parsing and executing each line, handling errors, and writing the output, ensuring a smooth and automated workflow for batch processing.
+The `execute_from_file` function reads expressions from an input file, parses and executes each expression, and writes the results to an output file. This functionality is integrated into the interactive loop, allowing the system to easily execute a batch of commands from a file and save the results. The process involves reading the file, parsing and executing each line, handling errors, and writing the output, ensuring a smooth and automated workflow for batch processing.
 
 ### Unit Testing of Capacities
 
-Sure! Let's walk through each expression and statement step-by-step to explain how they are parsed, executed, and their results.
 
 ### 1. Simple Arithmetic Expression: `2 + 2`
 
@@ -655,9 +652,6 @@ Sure! Let's walk through each expression and statement step-by-step to explain h
   - Assigns `[0, 2, 5, 7, 10]` to `linspace_result`.
 - **Result**: `linspace_result = [0, 2, 5, 7, 10]`
 
-### References
-
-Certainly! Here is the reference list in APA format, written in Markdown, with plain text links.
 
 ---
 

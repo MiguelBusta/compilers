@@ -36,7 +36,7 @@ from library import *
 The libraries imported
 ### Image Processing
 ---
-The code being worked on has the capability to run a command and return the matrix of the values of a image using the command of: 
+The code being worked on has the capability to run a command and return the matrix of the values of a image using the command: 
 ```
 execute
 

@@ -176,7 +176,7 @@ In this case `np.std` is added to the symbol_table in the code:
 
 This means that it can be invoked from the expressions being parsed by the parser.
 
-The np.std() function computes the standard deviation of the given data. The standard deviation is a measure of the amount of variation or dispersion in a set of values. It tells you how much the values in a dataset differ from the mean value.
+The np.std() function computes the standard deviation of the given data. The standard deviation is a measure of the amount of variation or dispersion in a set of values. It tells us how much the values in a dataset differ from the mean value.
 
 Example: We have a list of numbers and we want to calculate the standard deviation:
 
@@ -242,7 +242,7 @@ In this example, np.min(numbers) will return the minimum value from the list, wh
 
 `symbol_table["np.sum"] = np.sum`
 
-This inclusion allows for the invocation of `np.sum` from the expressions parsed by your parser.
+This inclusion allows for the invocation of `np.sum` from the expressions parsed by the parser.
 
 The `np.sum()` function calculates the sum of all elements in the provided array or along a specified axis. It returns the sum of the elements as a single scalar value.
 
@@ -262,7 +262,7 @@ In this example, `np.sum(numbers)` will return `15`, which is the sum of all the
 
 #### Maximum Value
 
-`np.max()` is another function from the NumPy library, specifically used to calculate the maximum value of a list or array of numbers. In this case, np.max is added to the symbol_table in your code:
+`np.max()` is another function from the NumPy library, specifically used to calculate the maximum value of a list or array of numbers. In this case, np.max is added to the symbol_table in the code:
 
 
 This means that it can be invoked from the expressions being parsed by the parser.

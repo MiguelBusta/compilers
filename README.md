@@ -100,9 +100,6 @@ Result 25
 ---
 Numpy is an almost elementary library needed for the use of statistics, and other values for basic mathematics. The need to have them in access is imperative and therefore the following installations have been done:
 
-
-Import 9 different libraries are the following:
-
 * mean
 * standard deviation
 * variance

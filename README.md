@@ -120,15 +120,6 @@ Linspace test out the list creation automatically.
 
 ### Numpy implementation
 ---
-#### Step in common
-
-Every library is imported with the following code: 
-
-```
-import numpy as np
-```
-
-With this step the code can add other numpy libraries if needed.
 
 #### Mean
 

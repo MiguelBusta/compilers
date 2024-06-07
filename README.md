@@ -2,7 +2,7 @@
 ## Authors
 Andrew Dunkerley | video: https://drive.google.com/file/d/1q0YC-qjN_lmwRbrsbObDOoJmM0fDVu5O/view?usp=sharing
 
-Manuel Barrera
+Manuel Barrera | https://drive.google.com/file/d/18Kw-tBN2JS117jdnlc1R-SCOBmvhFJJV/view?usp=sharing
 
 Miguel Bustamante | video: https://drive.google.com/file/d/1DblJWuWYVjtFHlF92qsR5_rxVwsTQK19/view?usp=sharing
 ## Development Report
@@ -285,7 +285,7 @@ The result of this operation 'max_result=np.max(m)' is '5'
 
 #### Product 
 
-This numoy atribute has the property to multiply the series of values in the list it is being saved on. In the translator the function runs in the following way:
+This numpy atribute has the property to multiply the series of values in the list it is being saved on. In the translator the function runs in the following way:
 * The translator reaches the FUNCTION_CALL node for np.prod.
 * It retrieves the parameters [1, 2, 3, 4].
 * It looks up np.prod in the symbol_table and finds np.prod.

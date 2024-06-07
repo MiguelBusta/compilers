@@ -4,7 +4,7 @@ Andrew Dunkerley | video: https://drive.google.com/file/d/1q0YC-qjN_lmwRbrsbObDO
 
 Manuel Barrera
 
-Miguel Bustamante
+Miguel Bustamante | video: https://drive.google.com/file/d/1DblJWuWYVjtFHlF92qsR5_rxVwsTQK19/view?usp=sharing
 ## Development Report
 ### Introduction
 The purpose of this document is to explain and explore the creation of a translator that acts like a compiler. The experiment has the capability of graphing the path that the compiler uses to access the values defined by our grammars.
